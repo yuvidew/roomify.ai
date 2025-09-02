@@ -1,0 +1,72 @@
+import { NextResponse } from "next/server";
+import { ai } from "@/lib/ai";
+import { Type, createUserContent, createPartFromUri } from "@google/genai";
+
+export const runtime = "nodejs";
+
+export async function POST(req: Request) {
+    const form = await req.formData();
+    const file = form.get("blueprint") as File;
+
+    const uploaded = await ai.files.upload({
+        file,
+        config: { mimeType: file.type || "image/png" },
+    })
+
+    const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: createUserContent([
+            createPartFromUri(uploaded.uri!, uploaded.mimeType!),
+            // `You are an architect's assistant.
+            // From this floor plan, extract a clean list of spaces.
+            // Include: name, type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other),
+            // approxAreaSqFt (number), dimensions (string), notes (string), and any labels from the image.
+            // If missing, estimate conservatively.`,
+            `You are an architect’s assistant.  
+            Given a floor plan image, extract a structured list of spaces.  
+
+            For each space, provide the following fields:  
+            - name (string)  
+            - type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)  
+            - approxAreaSqFt (number, estimate conservatively if not provided)  
+            - dimensions (string, e.g., "10x12 ft")  
+            - notes (string, any relevant observations)  
+            - labels (string, any text or labels present in the image)  
+
+            Ensure the output is clean, consistent, and formatted as structured data.  
+            If information is missing, infer it reasonably and document assumptions in the notes field.  
+            `,
+        ]),
+
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    rooms: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                name: { type: Type.STRING },
+                                type: {
+                                    type: Type.STRING, enum: [
+                                        "bedroom", "kitchen", "hall", "living", "dining",
+                                        "bathroom", "balcony", "storage", "other"
+                                    ]
+                                },
+                                approxAreaSqFt: { type: Type.NUMBER },
+                                dimensions: { type: Type.STRING },
+                                notes: { type: Type.STRING },
+                            },
+                            propertyOrdering: ["name", "type", "approxAreaSqFt", "dimensions", "notes"],
+                        },
+                    },
+                },
+                propertyOrdering: ["rooms"],
+            },
+        },
+    });
+
+    return NextResponse.json(JSON.parse(response.text!));
+}
