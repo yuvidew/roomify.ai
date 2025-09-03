@@ -4,7 +4,7 @@ import React from 'react'
 
 export const HomeSection = () => {
     return (
-        <div className=' h-full flex w-full items-center justify-center gap-3 '>
+        <div className=' h-full flex  items-center justify-center gap-3 w-[70%]'>
             <div className='flex flex-col w-[80%] gap-3'>
                 <Button size={"icon"}>
                     <WandSparkles />

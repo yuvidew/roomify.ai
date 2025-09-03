@@ -8,9 +8,9 @@ import axios from "axios";
  * @returns {Promise<any>} The extracted room data returned from the API.
  * @throws Will throw an error if the API request fails.
  */
-export const onExtractRooms = async (file: FormData) => {
+export const onExtractRooms = async (fd: FormData) => {
     try {
-        const { data } = await axios.post("/api/parse-blueprint", file);
+        const { data } = await axios.post("/api/parse-blueprint", fd);
         return data;
     } catch (error) {
         throw error;

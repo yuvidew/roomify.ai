@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TanstackQueryProvider } from "@/components/providers/tanstack-query-provider";
 import { Suspense } from "react";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,16 +31,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback = {<p>Loading..</p>}>
+        <Suspense fallback={<p>Loading..</p>}>
           <TanstackQueryProvider>
-
-          <ThemeProvider
+            <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
             >
               {children}
+              <Toaster />
             </ThemeProvider>
           </TanstackQueryProvider>
         </Suspense>
