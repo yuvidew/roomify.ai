@@ -1,5 +1,6 @@
 
 import { ExtractImageFrom } from '../_components/extract_image_from';
+import { HomeSection } from '../_components/home_section';
 
 export const DashboardView = () => {
     return (
@@ -8,6 +9,9 @@ export const DashboardView = () => {
             <ExtractImageFrom/>
             {/* end to extract image form */}
 
+            {/* start Home section */}
+            <HomeSection/>
+            {/* end  Home section */}
 
         </main>
     )
