@@ -20,7 +20,6 @@ export const DashboardView = () => {
                 <HomeSection/>
             )}
             {/* end  ai result section */}
-
         </main>
     )
 }
