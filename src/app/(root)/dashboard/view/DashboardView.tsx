@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from 'react';
 import { ExtractImageFrom } from '../_components/extract_image_from';
 import { HomeSection } from '../_components/home_section';
-import { Room } from '@/types/type';
 import { RoomsContainer } from '../_components/rooms_container';
+import { useStoreRooms } from '@/zustand/useStoreRooms';
 
 export const DashboardView = () => {
-    const [rooms, setRooms] = useState<Room[]>([]);
+    const {rooms} = useStoreRooms()
     return (
         <main className=" flex items-start h-full" >
             {/* start to extract image form */}
@@ -15,7 +14,7 @@ export const DashboardView = () => {
             {/* end to extract image form */}
 
             {/* start ai result section */}
-            {rooms.length === 0 ? (
+            {rooms.length !== 0 ? (
                 <RoomsContainer/>
             ) : (
                 <HomeSection/>

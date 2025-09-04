@@ -21,7 +21,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Bell, CreditCard, DotSquare, LogOut, UserCircle } from "lucide-react"
+import { Bell, CreditCard, EllipsisVertical, LogOut, UserCircle } from "lucide-react"
 
 export function NavUser({
   user,
@@ -53,7 +53,7 @@ export function NavUser({
                   {user.email}
                 </span>
               </div>
-              <DotSquare className="ml-auto size-4" />
+              <EllipsisVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

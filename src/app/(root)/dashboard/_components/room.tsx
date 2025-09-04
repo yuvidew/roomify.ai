@@ -12,6 +12,7 @@ import {
 import { Room } from "@/types/type";
 
 export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
+    const matchChar = 345;
     const getIcon = (type: string) => {
         switch (type) {
             case "bedroom":
@@ -60,9 +61,14 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
                     </div>
 
                     <div className="rounded-md bg-muted p-3">
-                        <p className="text-sm text-muted-foreground ">
-                            {`${notes.slice(0, 345)}...`}
-                        </p>
+                        {/* {notes.length <= matchChar ? (
+                            <p className=" text-sm ">{notes}</p>
+                        ) : (
+                        )} */}
+                            <div className=' relative flex flex-col gap-2'>
+                                <p className=' text-[14px] space-x-[3%]  '>{notes.slice(0, matchChar)}...</p>
+                            </div>
+
                     </div>
                 </div>
             </div>
