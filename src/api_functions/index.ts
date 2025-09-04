@@ -24,17 +24,17 @@ export const onExtractRooms = async (fd: FormData) => {
  * @returns {Promise<any>} The generated image data returned from the API.
  * @throws Will throw an error if the API request fails.
  */
-export const onGenerate = async (rooms: Room) => {
+export const onGenerate = async (rooms: Room[]) => {
     try {
         const { data } = await axios.post(
-            "/api/generate-images",
+            "/api/ai_image_1",
             rooms,
             {
                 headers: { "Content-Type": "application/json" },
             }
         );
 
-        return data;
+        return data.images as { mediaType: string; base64: string }[];
     } catch (error) {
         throw error;
     }

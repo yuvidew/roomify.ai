@@ -18,7 +18,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { DotSquare, Folder, LucideIcon, Share, Trash2 } from "lucide-react"
+import { DotSquare, Ellipsis, Folder, LucideIcon, Share, Trash2 } from "lucide-react"
 
 export function NavDocuments({
     items,
@@ -77,7 +77,7 @@ export function NavDocuments({
                 ))}
                 <SidebarMenuItem>
                     <SidebarMenuButton className="text-sidebar-foreground/70">
-                        <DotSquare className="text-sidebar-foreground/70" />
+                        <Ellipsis  className="text-sidebar-foreground/70" />
                         <span>More</span>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
