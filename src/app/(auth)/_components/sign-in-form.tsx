@@ -40,7 +40,8 @@ export const SignInForm = ({
             email: "",
             password: ""
         }
-    })
+    });
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0">
@@ -74,9 +75,7 @@ export const SignInForm = ({
                                                         id='email'
                                                         type="email"
                                                         placeholder='m@example.com'
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        required
+                                                        {...field}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -99,9 +98,7 @@ export const SignInForm = ({
                                                             id="password"
                                                             type={isEyeOpen ? "text" : "password"}
                                                             placeholder={"••••••••"}
-                                                            value={field.value}
-                                                            onChange={field.onChange}
-                                                            required
+                                                            {...field}
                                                         />
                                                         <span onClick={() => setIsEyeOpen(!isEyeOpen)}>
                                                             {isEyeOpen ? (

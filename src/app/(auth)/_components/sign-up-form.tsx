@@ -79,9 +79,7 @@ export const SignUpForm = ({
                                                         id='name'
                                                         type="text"
                                                         placeholder='e.g. John due'
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        required
+                                                        {...field}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -103,9 +101,7 @@ export const SignUpForm = ({
                                                         id='email'
                                                         type="email"
                                                         placeholder='m@example.com'
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        required
+                                                        {...field}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
