@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TanstackQueryProvider } from "@/components/providers/tanstack-query-provider";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
+import { LoadingFallback } from "@/components/LoadingFallback";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={<p>Loading..</p>}>
+        <Suspense fallback={<LoadingFallback/>}>
           <TanstackQueryProvider>
             <ThemeProvider
               attribute="class"

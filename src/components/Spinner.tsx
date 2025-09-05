@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 interface SpinnerSizeProps {
     size?: 'default' | 'sm' | 'lg' | 'icon';
-    color? : "default";
+    color? : "default"| 'primary';
 }
 
 
@@ -31,6 +31,7 @@ const spinnerVariants = cva(
             },
             color : {
                 default : "text-[#fff]",
+                primary : "text-primary"
             }
         },
         defaultVariants: {
@@ -47,7 +48,7 @@ const spinnerVariants = cva(
  *
  * @param {Object} props - The props for the Spinner component.
  * @param {'default' | 'sm' | 'lg' | 'icon'} [props.size='default'] - The size of the spinner.
- * @param {'default'} [props.color='default'] - The color variant of the spinner.
+ * @param {'default' | 'primary'} [props.color='default'] - The color variant of the spinner.
  * @returns {JSX.Element} The rendered spinning loader icon.
  */
 
