@@ -1,16 +1,13 @@
 "use client"
+
 import React, { useState } from 'react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Image from 'next/image'
 import Link from 'next/link'
-import z from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
     Form,
@@ -21,26 +18,40 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Eye, EyeOff } from 'lucide-react'
+import z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSignUp } from '../api/use-sign-up'
+import Spinner from '@/components/Spinner'
+import { registerSchema } from '../schemas'
 
-const SignInSchema = z.object({
+const SignUpSchema = z.object({
+    name: z.string().min(3, { message: "Name is required" }),
     email: z.string().email("Invalid email address"),
     password: z
         .string()
         .min(6, { message: "Password must be at least 6 characters long" }),
 })
 
-export const SignInForm = ({
+export const SignUpForm = ({
     className,
     ...props
 }: React.ComponentProps<"div">) => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const form = useForm<z.infer<typeof SignInSchema>>({
-        resolver: zodResolver(SignInSchema),
-        defaultValues: {
-            email: "",
-            password: ""
+    const {mutate , isPending} = useSignUp()
+
+    const form = useForm<z.infer<typeof SignUpSchema>>({
+        resolver : zodResolver(SignUpSchema),
+        defaultValues : {
+            name : "",
+            email : "",
+            password : ""
         }
-    });
+    })
+
+    const onSubmit = (json : z.infer<typeof registerSchema>) => {
+        mutate({json})
+    }
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -51,15 +62,37 @@ export const SignInForm = ({
                             className="p-6 md:p-8"
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                // form.handleSubmit(onSignUp)();
+                                form.handleSubmit(onSubmit)();
                             }}
                         >
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col items-center text-center">
-                                    <h1 className="text-2xl font-bold">Welcome back</h1>
+                                    <h1 className="text-2xl font-bold">Welcome to <span className=' text-primary'>Roomify.AI</span></h1>
                                     <p className="text-muted-foreground text-balance">
-                                        Login to your Roomify.AI account
+                                        Create an account
                                     </p>
+                                </div>
+                                <div className="grid gap-3">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Name
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        id='name'
+                                                        type="text"
+                                                        placeholder='e.g. John due'
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
                                 <div className="grid gap-3">
                                     <FormField
@@ -98,7 +131,9 @@ export const SignInForm = ({
                                                             id="password"
                                                             type={isEyeOpen ? "text" : "password"}
                                                             placeholder={"••••••••"}
-                                                            {...field}
+                                                            value={field.value}
+                                                            onChange={field.onChange}
+                                                            required
                                                         />
                                                         <span onClick={() => setIsEyeOpen(!isEyeOpen)}>
                                                             {isEyeOpen ? (
@@ -115,8 +150,8 @@ export const SignInForm = ({
                                         )}
                                     />
                                 </div>
-                                <Button type="submit" className="w-full">
-                                    Sign in
+                                <Button disabled = {isPending} type="submit" className="w-full">
+                                    {isPending ? <Spinner color="default" /> : "Sign up"}
                                 </Button>
                                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                     <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -153,9 +188,9 @@ export const SignInForm = ({
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
-                                    Don&apos;t have an account?{" "}
-                                    <Link href="/sign-up" className="underline underline-offset-4">
-                                        Sign up
+                                    Already you have a account?{" "}
+                                    <Link href="/sign-in" className="underline underline-offset-4">
+                                        Sign in
                                     </Link>
                                 </div>
                             </div>

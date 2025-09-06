@@ -17,11 +17,6 @@ export async function POST(req: Request) {
         model: "gemini-2.5-flash",
         contents: createUserContent([
             createPartFromUri(uploaded.uri!, uploaded.mimeType!),
-            // `You are an architect's assistant.
-            // From this floor plan, extract a clean list of spaces.
-            // Include: name, type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other),
-            // approxAreaSqFt (number), dimensions (string), notes (string), and any labels from the image.
-            // If missing, estimate conservatively.`,
             `You are an architect’s assistant.  
             Given a floor plan image, extract a structured list of spaces.  
 
