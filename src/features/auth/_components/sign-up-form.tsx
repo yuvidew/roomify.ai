@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import Image from 'next/image'
-import Link from 'next/link'
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
     Form,
@@ -17,13 +17,13 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff } from 'lucide-react'
-import z from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useSignUp } from '../api/use-sign-up'
-import Spinner from '@/components/Spinner'
-import { registerSchema } from '../schemas'
+import { Eye, EyeOff } from "lucide-react";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSignUp } from "../api/use-sign-up";
+import Spinner from "@/components/Spinner";
+import { registerSchema } from "../schemas";
 
 const SignUpSchema = z.object({
     name: z.string().min(3, { message: "Name is required" }),
@@ -31,27 +31,28 @@ const SignUpSchema = z.object({
     password: z
         .string()
         .min(6, { message: "Password must be at least 6 characters long" }),
-})
+});
 
 export const SignUpForm = ({
     className,
     ...props
 }: React.ComponentProps<"div">) => {
+    // TODO: impl.. a github and google authentication
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const {mutate , isPending} = useSignUp()
+    const { mutate, isPending } = useSignUp();
 
     const form = useForm<z.infer<typeof SignUpSchema>>({
-        resolver : zodResolver(SignUpSchema),
-        defaultValues : {
-            name : "",
-            email : "",
-            password : ""
-        }
-    })
+        resolver: zodResolver(SignUpSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+        },
+    });
 
-    const onSubmit = (json : z.infer<typeof registerSchema>) => {
-        mutate({json})
-    }
+    const onSubmit = (json: z.infer<typeof registerSchema>) => {
+        mutate({ json });
+    };
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -67,7 +68,9 @@ export const SignUpForm = ({
                         >
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col items-center text-center">
-                                    <h1 className="text-2xl font-bold">Welcome to <span className=' text-primary'>Roomify.AI</span></h1>
+                                    <h1 className="text-2xl font-bold">
+                                        Welcome to <span className=" text-primary">Roomify.AI</span>
+                                    </h1>
                                     <p className="text-muted-foreground text-balance">
                                         Create an account
                                     </p>
@@ -78,14 +81,12 @@ export const SignUpForm = ({
                                         name="name"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
-                                                    Name
-                                                </FormLabel>
+                                                <FormLabel>Name</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        id='name'
+                                                        id="name"
                                                         type="text"
-                                                        placeholder='e.g. John due'
+                                                        placeholder="e.g. John due"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -100,14 +101,12 @@ export const SignUpForm = ({
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
-                                                    Email
-                                                </FormLabel>
+                                                <FormLabel>Email</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        id='email'
+                                                        id="email"
                                                         type="email"
-                                                        placeholder='m@example.com'
+                                                        placeholder="m@example.com"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -122,9 +121,7 @@ export const SignUpForm = ({
                                         name="password"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
-                                                    Password
-                                                </FormLabel>
+                                                <FormLabel>Password</FormLabel>
                                                 <FormControl>
                                                     <div className=" relative ">
                                                         <Input
@@ -138,7 +135,6 @@ export const SignUpForm = ({
                                                         <span onClick={() => setIsEyeOpen(!isEyeOpen)}>
                                                             {isEyeOpen ? (
                                                                 <Eye className=" size-4 absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer " />
-
                                                             ) : (
                                                                 <EyeOff className=" size-4 absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer " />
                                                             )}
@@ -150,7 +146,7 @@ export const SignUpForm = ({
                                         )}
                                     />
                                 </div>
-                                <Button disabled = {isPending} type="submit" className="w-full">
+                                <Button disabled={isPending} type="submit" className="w-full">
                                     {isPending ? <Spinner color="default" /> : "Sign up"}
                                 </Button>
                                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -158,15 +154,16 @@ export const SignUpForm = ({
                                         Or continue with
                                     </span>
                                 </div>
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                     <Button variant="outline" type="button" className="w-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            {" "}
                                             <path
-                                                d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
                                                 fill="currentColor"
-                                            />
+                                                d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.06-.02-2.08-3.34.73-4.05-1.61-4.05-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.53.12-3.18 0 0 1.01-.32 3.3 1.23.95-.27 1.97-.4 3-.4s2.05.13 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.62-5.48 5.92.43.38.81 1.1.81 2.22 0 1.61-.02 2.92-.02 3.31 0 .32.21.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"
+                                            />{" "}
                                         </svg>
-                                        <span className="sr-only">Login with Apple</span>
+                                        <span className="sr-only">Login with Github</span>
                                     </Button>
                                     <Button variant="outline" type="button" className="w-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -177,19 +174,13 @@ export const SignUpForm = ({
                                         </svg>
                                         <span className="sr-only">Login with Google</span>
                                     </Button>
-                                    <Button variant="outline" type="button" className="w-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <path
-                                                d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"
-                                                fill="currentColor"
-                                            />
-                                        </svg>
-                                        <span className="sr-only">Login with Meta</span>
-                                    </Button>
                                 </div>
                                 <div className="text-center text-sm">
                                     Already you have a account?{" "}
-                                    <Link href="/sign-in" className="underline underline-offset-4">
+                                    <Link
+                                        href="/sign-in"
+                                        className="underline underline-offset-4"
+                                    >
                                         Sign in
                                     </Link>
                                 </div>
@@ -199,7 +190,7 @@ export const SignUpForm = ({
                     <div className="bg-muted relative hidden md:block">
                         <Image
                             src={"/auth.jpeg"}
-                            className=' w-full h-full object-cover'
+                            className=" w-full h-full object-cover"
                             alt="auth page"
                             width={500}
                             height={500}
@@ -212,5 +203,5 @@ export const SignUpForm = ({
                 and <a href="#">Privacy Policy</a>.
             </div>
         </div>
-    )
-}
+    );
+};
