@@ -9,6 +9,10 @@ interface Props {
 }
 
 
+/**
+ * @param props - Component props.
+ * @param props.isUserLogin - Whether the user is authenticated.
+ */
 export const HeroSection = ({ isUserLogin }: Props) => {
     const router = useRouter()
     return (
