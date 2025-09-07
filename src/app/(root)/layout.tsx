@@ -1,12 +1,18 @@
 import { Header } from "@/components/Header";
 import { AppSidebar } from "@/components/side-bar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { getCurrent } from "@/features/auth/queries";
+import { redirect } from "next/navigation";
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const user = await getCurrent();
+    if (!user) {
+        redirect("/sign-in")
+    }
     return (
         <SidebarProvider
         style={

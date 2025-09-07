@@ -1,5 +1,5 @@
 import { client } from "@/lib/rpc";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ type RequestType = InferRequestType<(typeof client.api.authentication.signup)["$
  */
 export const useSignUp = () => {
     const route = useRouter();
-    // const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
     return useMutation<ResponseType, Error, RequestType>({
         /**
@@ -27,8 +27,9 @@ export const useSignUp = () => {
         },
         onSuccess: () => {
             toast.success("Sign up successfully.");
+            route.refresh();
             route.push("/");
-            // TODO : add invalidate queries for fetch data
+            queryClient.invalidateQueries({ queryKey: ["current-user"] });
         },
         onError: () => {
             toast.error("Failed to sign up.");
