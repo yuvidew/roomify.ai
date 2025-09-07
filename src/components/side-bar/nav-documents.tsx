@@ -18,7 +18,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { DotSquare, Ellipsis, Folder, LucideIcon, Share, Trash2 } from "lucide-react"
+import { EllipsisVertical, Ellipsis, Folder, LucideIcon, Share, Trash2 } from "lucide-react"
 
 export function NavDocuments({
     items,
@@ -49,7 +49,7 @@ export function NavDocuments({
                                     showOnHover
                                     className="data-[state=open]:bg-accent rounded-sm"
                                 >
-                                    <DotSquare />
+                                    <EllipsisVertical />
                                     <span className="sr-only">More</span>
                                 </SidebarMenuAction>
                             </DropdownMenuTrigger>

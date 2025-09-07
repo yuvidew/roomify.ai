@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 
 import {
   SidebarGroup,
@@ -9,34 +8,37 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LucideIcon } from "lucide-react"
+import { HelpCircle, Settings } from "lucide-react"
+import { useState } from "react"
+import { SettingModel } from "./setting-dialog"
 
-export function NavSecondary({
-  items,
-  ...props
-}: {
-  items: {
-    title: string
-    url: string
-    icon: LucideIcon
-  }[]
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+export const NavSecondary = () => {
+  const [isOpen , setIsOpen] = useState(false)
   return (
-    <SidebarGroup {...props}>
+    <>
+    <SidebarGroup className="mt-auto">
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
+            <SidebarMenuItem >
+              <SidebarMenuButton onClick={() => setIsOpen(!isOpen)} >
+                  <Settings />
+                  <span>Settings</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          ))}
+
+            <SidebarMenuItem >
+              <SidebarMenuButton >
+                  <HelpCircle />
+                  <span>Get Help</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
+
+    {/* start to setting modal */}
+    <SettingModel open = {isOpen} onOpenChange={setIsOpen} />
+    {/* end to setting modal */}
+    </>
   )
 }
