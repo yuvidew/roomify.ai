@@ -13,11 +13,12 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { AirVent, Camera, ChartBar, Database, File, Folder, HelpCircle, LayoutDashboard, List, Search, Settings, Text, Users } from "lucide-react"
+import { AirVent, Camera, Database, File,  HelpCircle, ScanSearch,  Search, Settings, Text, } from "lucide-react"
 import { NavDocuments } from "./nav-documents"
 import { NavMain } from "./nav-main"
-import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user"
+import { Logo } from "../Logo"
+import { NavSecondary } from "./nav-secondary"
 
 const data = {
     user: {
@@ -27,29 +28,14 @@ const data = {
     },
     navMain: [
         {
-            title: "Dashboard",
-            url: "#",
-            icon: LayoutDashboard,
+            title: "Upload blue print",
+            url: "/dashboard",
+            icon: ScanSearch,
         },
         {
-            title: "Lifecycle",
+            title: "Search",
             url: "#",
-            icon: List,
-        },
-        {
-            title: "Analytics",
-            url: "#",
-            icon: ChartBar,
-        },
-        {
-            title: "Projects",
-            url: "#",
-            icon: Folder,
-        },
-        {
-            title: "Team",
-            url: "#",
-            icon: Users,
+            icon: Search,
         },
     ],
     navClouds: [
@@ -111,11 +97,6 @@ const data = {
             url: "#",
             icon: HelpCircle,
         },
-        {
-            title: "Search",
-            url: "#",
-            icon: Search,
-        },
     ],
     documents: [
         {
@@ -146,21 +127,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             asChild
                             className="data-[slot=sidebar-menu-button]:!p-1.5"
                         >
-                            <a href="#">
-                                {/* <InnerShadowTop className="!size-5" /> */}
-                                <span className="text-base font-semibold">Acme Inc.</span>
-                            </a>
+                            <Logo isTitleShow />
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
+                <NavMain />
                 <NavDocuments items={data.documents} />
-                <NavSecondary items={data.navSecondary} className="mt-auto" />
+                <NavSecondary  />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser  />
             </SidebarFooter>
         </Sidebar>
     )

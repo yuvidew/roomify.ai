@@ -4,12 +4,10 @@
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage,
 } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -21,18 +19,42 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Bell, CreditCard, EllipsisVertical, LogOut, UserCircle } from "lucide-react"
+import { useCurrentUser } from "@/features/auth/api/use-current-user"
+import { EllipsisVertical, LogOut } from "lucide-react"
+import { Skeleton } from "../ui/skeleton"
+import { useLogout } from "@/features/auth/api/use-logout"
+import Spinner from "../Spinner"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
+export const NavUser = () => {
+  const { isMobile } = useSidebar();
+  const { data: user, isLoading } = useCurrentUser();
+  const {mutate , isPending} = useLogout()
+
+  if (!user) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <Skeleton className=" w-full h-12" />
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
   }
-}) {
-  const { isMobile } = useSidebar()
+
+  if (isLoading) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <Skeleton className=" w-full h-12" />
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
+  };
+
+  const { name, email } = user;
+
+  const avatarFallback = name
+    ? name.charAt(0).toUpperCase()
+    : email.charAt(0).toUpperCase() ?? "U";
 
   return (
     <SidebarMenu>
@@ -44,13 +66,13 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                {/* <AvatarImage src={user.avatar} alt={name} /> */}
+                <AvatarFallback className="rounded-lg text-white bg-primary">{avatarFallback}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {email}
                 </span>
               </div>
               <EllipsisVertical className="ml-auto size-4" />
@@ -65,36 +87,28 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+                  <AvatarFallback className="rounded-lg text-white bg-primary">{avatarFallback}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">{name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {email}
                   </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircle />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
+            <DropdownMenuItem onClick={() => mutate()}>
+              {isPending ? (
+                <Spinner color="primary" />
+              ) : (
+
+                <>
+                <LogOut />
+                Log out
+                </>
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
