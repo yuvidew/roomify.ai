@@ -1,6 +1,6 @@
 "use client ";
 import React, { useEffect, useState } from "react";
-import { RoomCard } from "./room";
+import { RoomCard } from "../../extract-rooms/_components/room";
 import { useStoreRooms } from "@/zustand/useStoreRooms";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";

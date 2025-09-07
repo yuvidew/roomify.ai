@@ -2,6 +2,6 @@ export type Room = {
     name : string,
     type : string,
     approxAreaSqFt : number,
-    dimensions : string,
+    dimensions? : string,
     notes : string
 }

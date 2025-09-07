@@ -16,6 +16,13 @@ interface Props {
     onOpenChange : (value : boolean) => void
 }
 
+/**
+ * Settings dialog for configuring appearance.
+ *
+ * @param props - Component props.
+ * @param props.open - Controls whether the dialog is open.
+ * @param props.onOpenChange - Callback fired when open state changes.
+ */
 export const SettingModel = ({open , onOpenChange} : Props) => {
 
     return (
