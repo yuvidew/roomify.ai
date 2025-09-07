@@ -1,0 +1,135 @@
+[
+    {
+      "name": "MASTER BED ROOM 2",
+      "type": "bedroom",
+      "approxAreaSqFt": 157,
+      "dimensions": "13.12x11.94 ft",
+      "notes": "Main rectangular area, connected to a bathroom and back verandah. Dimensions calculated from 4000x3640 mm."
+    },
+    {
+      "name": "BATH (Master Bed Room 2)",
+      "type": "bathroom",
+      "approxAreaSqFt": 48,
+      "dimensions": "7.68x6.27 ft",
+      "notes": "Ensuite bathroom for Master Bed Room 2. Dimensions calculated from 2340x1910 mm (approximate for width)."
+    },
+    {
+      "name": "BACK VERANDAH",
+      "type": "balcony",
+      "approxAreaSqFt": 37,
+      "dimensions": "4.46x8.24 ft",
+      "notes": "Outdoor space. Dimensions calculated from 1358 mm width and 2510 mm length (759+1751 mm vertical segments)."
+    },
+    {
+      "name": "STORE",
+      "type": "storage",
+      "approxAreaSqFt": 67,
+      "dimensions": "11.70x5.75 ft",
+      "notes": "Storage room. Dimensions calculated from 3567x1751 mm."
+    },
+    {
+      "name": "KITCHEN",
+      "type": "kitchen",
+      "approxAreaSqFt": 132,
+      "dimensions": "13.05x10.10 ft",
+      "notes": "Includes space for a dining table. Dimensions calculated from 3977x3080 mm."
+    },
+    {
+      "name": "BED ROOM 2",
+      "type": "bedroom",
+      "approxAreaSqFt": 104,
+      "dimensions": "10.50x9.86 ft",
+      "notes": "Bedroom with access to a shared and private bathroom. Dimensions calculated from 3200x3007 mm."
+    },
+    {
+      "name": "BATH (Shared)",
+      "type": "bathroom",
+      "approxAreaSqFt": 35,
+      "dimensions": "7.61x4.59 ft",
+      "notes": "Shared bathroom. Dimensions calculated from 2320x1400 mm (approximate)."
+    },
+    {
+      "name": "P/BATH (Bed Room 2)",
+      "type": "bathroom",
+      "approxAreaSqFt": 32,
+      "dimensions": "7.61x4.21 ft",
+      "notes": "Private bathroom for Bed Room 2. Dimensions calculated from 2320x1284 mm."
+    },
+    {
+      "name": "BED ROOM 1",
+      "type": "bedroom",
+      "approxAreaSqFt": 180,
+      "dimensions": "14.11x12.73 ft",
+      "notes": "Bedroom. Dimensions calculated from 4300x3882 mm."
+    },
+    {
+      "name": "BATH (Bed Room 1)",
+      "type": "bathroom",
+      "approxAreaSqFt": 42,
+      "dimensions": "9.35x4.47 ft",
+      "notes": "Ensuite bathroom for Bed Room 1. Dimensions calculated from 2850x1363 mm."
+    },
+    {
+      "name": "CORRIDOR (Left)",
+      "type": "hall",
+      "approxAreaSqFt": 82,
+      "dimensions": "19.70x4.15 ft",
+      "notes": "Connects kitchen, Bed Room 2, and Sitting Room. Area is a conservative estimate for the main segment. Dimensions calculated from 6005x1264 mm."
+    },
+    {
+      "name": "CORRIDOR (Right)",
+      "type": "hall",
+      "approxAreaSqFt": 53,
+      "dimensions": "12.70x4.15 ft",
+      "notes": "Connects Bed Room 1, Master Bed Room, and Master Sitting Room. Area is a conservative estimate for the main segment. Dimensions calculated from 3871x1264 mm (approximate)."
+    },
+    {
+      "name": "SITTING ROOM",
+      "type": "living",
+      "approxAreaSqFt": 388,
+      "dimensions": "19.70x19.70 ft",
+      "notes": "Central living area. Dimensions calculated from 6005x6005 mm."
+    },
+    {
+      "name": "MASTER SITTING ROOM",
+      "type": "living",
+      "approxAreaSqFt": 158,
+      "dimensions": "12.80x12.33 ft",
+      "notes": "Private sitting area connected to the Master Bedroom complex. Dimensions calculated from 3902x3759 mm."
+    },
+    {
+      "name": "MASTER SITOUT/PORCH",
+      "type": "balcony",
+      "approxAreaSqFt": 73,
+      "dimensions": "12.80x5.67 ft",
+      "notes": "Outdoor sit-out area for the Master Bedroom complex. Dimensions calculated from 3902x1726 mm."
+    },
+    {
+      "name": "CLOSET",
+      "type": "storage",
+      "approxAreaSqFt": 34,
+      "dimensions": "8.27x4.15 ft",
+      "notes": "Walk-in closet. Dimensions calculated from 2521x1264 mm."
+    },
+    {
+      "name": "BATH (Master Bed Room)",
+      "type": "bathroom",
+      "approxAreaSqFt": 64,
+      "dimensions": "7.77x8.20 ft",
+      "notes": "Ensuite bathroom for Master Bed Room. Width (2500 mm) is estimated. Dimensions calculated from 2368x2500 mm."
+    },
+    {
+      "name": "MASTER BED ROOM",
+      "type": "bedroom",
+      "approxAreaSqFt": 260,
+      "dimensions": "15.76x16.50 ft",
+      "notes": "Main bedroom, connected to a closet, bathroom, and master sitout/porch. Dimensions calculated from 4803x5030 mm."
+    },
+    {
+      "name": "FRONT VERANDAH",
+      "type": "balcony",
+      "approxAreaSqFt": 160,
+      "dimensions": "19.70x8.11 ft",
+      "notes": "Main entrance verandah, L-shaped. Area calculated for the main rectangular section. Dimensions calculated from 6005x2471 mm."
+    }
+  ]

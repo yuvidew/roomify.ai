@@ -11,8 +11,17 @@ import {
 } from "lucide-react";
 import { Room } from "@/types/type";
 
+/**
+ * Room summary card UI.
+ *
+ * @param props - Room data to render.
+ * @param props.type - Room category (e.g., bedroom, kitchen).
+ * @param props.name - Display name of the room.
+ * @param props.notes - Descriptive notes for the room.
+ * @param props.approxAreaSqFt - Approximate area in square feet.
+ */
 export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
-    const matchChar = 345;
+    const matchChar = 205;
     const getIcon = (type: string) => {
         switch (type) {
             case "bedroom":
@@ -66,7 +75,10 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
                         ) : (
                         )} */}
                             <div className=' relative flex flex-col gap-2'>
-                                <p className=' text-[14px] space-x-[3%]  '>{notes.slice(0, matchChar)}...</p>
+                                <p className=' text-[14px] line-clamp-4 space-x-[3%]  '>
+                                    {/* {notes.slice(0, matchChar)}... */}
+                                    {notes}
+                                </p>
                             </div>
 
                     </div>
