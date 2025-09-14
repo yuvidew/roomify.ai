@@ -1,10 +1,12 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { create_extract_rooms_schema } from "../schema";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { analyzeFloorPlan, FloorPlanAnalysis } from "@/app/api/parse-blueprint";
-import { AI_EXTRACT_ROOMS_TABLE_ID, BUCKET_ID, DATABASE_ID, EXTRACT_ROOMS_TABLE_ID } from "@/lib/config";
+import { AI_EXTRACT_ROOMS_TABLE_ID, BUCKET_ID, DATABASE_ID, ENDPOINT, EXTRACT_ROOMS_TABLE_ID } from "@/lib/config";
+// import extract_room from '@/features/extract-rooms/server/route';
+
 
 const app = new Hono()
     .post("/upload_blueprint", zValidator("form", create_extract_rooms_schema),
@@ -50,15 +52,15 @@ const app = new Hono()
             };
 
             if (!roomsAnalysis || !uploadedImageUrl) {
-                    return c.json({
-                        error: "Processing failed",
-                        message: "Could not process the blueprint image"
-                    }, 500);
-                }
+                return c.json({
+                    error: "Processing failed",
+                    message: "Could not process the blueprint image"
+                }, 500);
+            }
 
             if (!user) {
                 return c.json({
-                    message : "User id is required!"
+                    message: "User id is required!"
                 })
             }
 
@@ -68,10 +70,10 @@ const app = new Hono()
                 EXTRACT_ROOMS_TABLE_ID,
                 ID.unique(),
                 {
-                    img_url : uploadedImageUrl!,
-                    img_name : "",
-                    home_title : roomsAnalysis?.title,
-                    user_id : user.$id
+                    img_url: uploadedImageUrl!,
+                    img_name: "",
+                    home_title: roomsAnalysis?.title,
+                    user_id: user.$id
                 }
             );
 
@@ -100,5 +102,31 @@ const app = new Hono()
             })
 
         })
+    .get("/:extract_room_id", sessionMiddleware, async (c) => {
+        const database = c.get("databases");
+        const { extract_room_id } = c.req.param();
+
+
+
+        if (!extract_room_id) {
+            return c.json({
+                message: "Extract_room_id is required"
+            })
+        }
+
+
+
+        const extracted_rooms = await database.listDocuments(
+            DATABASE_ID,
+            AI_EXTRACT_ROOMS_TABLE_ID,
+            [
+                Query.equal("extract_room_id", extract_room_id)
+            ]
+        );
+
+        return c.json({ total : extracted_rooms.total , documents : extracted_rooms.documents })
+
+
+    })
 
 export default app;

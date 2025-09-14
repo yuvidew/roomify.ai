@@ -20,6 +20,7 @@ import { useUploadBluePrint } from "@/features/dashboard/api/use-upload-blueprin
 import Spinner from "@/components/Spinner";
 import { useState } from "react";
 import Image from "next/image";
+import { useCurrentUser } from "@/features/auth/api/use-current-user";
 
 const UploadBluePrintSchema = z.object({
     blueprint: z
@@ -32,6 +33,7 @@ const UploadBluePrintSchema = z.object({
 
 export const DashboardView = () => {
     const { mutate, isPending } = useUploadBluePrint();
+    const { data: user, isLoading } = useCurrentUser();
     const [upload_url, setUploadUrl] = useState<string | undefined>(undefined);
     const form = useForm<z.infer<typeof UploadBluePrintSchema>>({
         resolver: zodResolver(UploadBluePrintSchema),
@@ -51,7 +53,11 @@ export const DashboardView = () => {
             <div className=" h-full flex justify-center flex-col gap-8 lg:w-[45%] w-full  py-3 px-6">
                 <div className=" flex flex-col gap-3">
                     <h1 className="text-xl font-bold text-left">
-                        👋 Hey, <span className=" text-primary">Yuvi dew</span>
+                        {isLoading ? <Spinner color="primary" /> :
+                            <>
+                                👋 Hey, <span className=" text-primary">{user?.name}</span>
+                            </>
+                        }
                     </h1>
                     <p className="text-left text-sm">
                         Upload your dream home floor-plan image

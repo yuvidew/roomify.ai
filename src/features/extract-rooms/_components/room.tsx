@@ -87,3 +87,7 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
         </Card>
     );
 };
+
+export const RoomCardSkeleton = () => {
+    
+}
