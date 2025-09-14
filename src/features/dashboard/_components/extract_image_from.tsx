@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button";
 import {  ImageIcon, ScanSearch, Upload } from "lucide-react";
-import { useExtractRooms } from '../hooks/useDashboard';
+import { useExtractRooms } from '../../../app/(root)/dashboard/hooks/useDashboard';
 import { useStoreRooms } from '@/zustand/useStoreRooms';
 import { Room } from '@/types/type';
 

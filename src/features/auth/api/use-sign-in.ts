@@ -11,7 +11,7 @@ type RequestType = InferRequestType<(typeof client.api.authentication.signin)["$
  * Provides a React Query mutation to sign in a user.
  * @returns Mutation object for triggering sign-in and handling status.
  */
-export const useSignIn = () => {
+export const useSignIn = () => { 
     const route = useRouter();
     const queryClient = useQueryClient();
 
@@ -27,7 +27,7 @@ export const useSignIn = () => {
         },
         onSuccess: () => {
             toast.success("Sign in successfully.");
-            route.refresh()
+            // route.refresh()
             route.replace("/");
             queryClient.invalidateQueries({ queryKey: ["current-user"] });
         },

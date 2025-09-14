@@ -4,7 +4,7 @@ import { RoomCard } from "../../extract-rooms/_components/room";
 import { useStoreRooms } from "@/zustand/useStoreRooms";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";
-import { useGenerateRoomsImage } from "../hooks/useDashboard";
+import { useGenerateRoomsImage } from "../../../app/(root)/dashboard/hooks/useDashboard";
 import Spinner from "@/components/Spinner";
 import Image from "next/image";
 

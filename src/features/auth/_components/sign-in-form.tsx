@@ -1,14 +1,14 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React, { useState } from "react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import Image from 'next/image'
-import Link from 'next/link'
-import z from 'zod'
-import { useForm } from 'react-hook-form'
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import Link from "next/link";
+import z from "zod";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -19,36 +19,36 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff } from 'lucide-react'
-import { useSignIn } from '../api/use-sign-in'
-import { loginSchema } from '../schemas'
-import Spinner from '@/components/Spinner'
+import { Eye, EyeOff } from "lucide-react";
+import { useSignIn } from "../api/use-sign-in";
+import { loginSchema } from "../schemas";
+import Spinner from "@/components/Spinner";
 
 const SignInSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z
         .string()
         .min(6, { message: "Password must be at least 6 characters long" }),
-})
+});
 
 export const SignInForm = ({
     className,
     ...props
 }: React.ComponentProps<"div">) => {
-    // TODO: impl.. a github and google authentication
+    // TODO: impl.. a github and google authentication and change the eye to button
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const {mutate , isPending} = useSignIn()
+    const { mutate, isPending } = useSignIn();
     const form = useForm<z.infer<typeof SignInSchema>>({
         resolver: zodResolver(SignInSchema),
         defaultValues: {
             email: "",
-            password: ""
-        }
+            password: "",
+        },
     });
 
-    const onSubmit = (json : z.infer<typeof loginSchema>) => {
-        mutate({json})
-    }
+    const onSubmit = (json: z.infer<typeof loginSchema>) => {
+        mutate({ json });
+    };
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -75,14 +75,12 @@ export const SignInForm = ({
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
-                                                    Email
-                                                </FormLabel>
+                                                <FormLabel>Email</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        id='email'
+                                                        id="email"
                                                         type="email"
-                                                        placeholder='m@example.com'
+                                                        placeholder="m@example.com"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -97,9 +95,7 @@ export const SignInForm = ({
                                         name="password"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>
-                                                    Password
-                                                </FormLabel>
+                                                <FormLabel>Password</FormLabel>
                                                 <FormControl>
                                                     <div className=" relative ">
                                                         <Input
@@ -108,14 +104,13 @@ export const SignInForm = ({
                                                             placeholder={"••••••••"}
                                                             {...field}
                                                         />
-                                                        <span onClick={() => setIsEyeOpen(!isEyeOpen)}>
+                                                        <Button type="button" size={"icon"} variant={"default"} className=" bg-transparent hover:bg-transparent border-none outline-0 absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer" onClick={() => setIsEyeOpen(!isEyeOpen)}>
                                                             {isEyeOpen ? (
-                                                                <Eye className=" size-4 absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer " />
-
+                                                                <Eye className=" size-4  " />
                                                             ) : (
-                                                                <EyeOff className=" size-4 absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer " />
+                                                                <EyeOff className=" size-4 " />
                                                             )}
-                                                        </span>
+                                                        </Button>
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />
@@ -154,7 +149,10 @@ export const SignInForm = ({
                                 </div>
                                 <div className="text-center text-sm">
                                     Don&apos;t have an account?{" "}
-                                    <Link href="/sign-up" className="underline underline-offset-4">
+                                    <Link
+                                        href="/sign-up"
+                                        className="underline underline-offset-4"
+                                    >
                                         Sign up
                                     </Link>
                                 </div>
@@ -164,7 +162,7 @@ export const SignInForm = ({
                     <div className="bg-muted relative hidden md:block">
                         <Image
                             src={"/auth.jpeg"}
-                            className=' w-full h-full object-cover'
+                            className=" w-full h-full object-cover"
                             alt="auth page"
                             width={500}
                             height={500}
@@ -177,5 +175,5 @@ export const SignInForm = ({
                 and <a href="#">Privacy Policy</a>.
             </div>
         </div>
-    )
-}
+    );
+};
