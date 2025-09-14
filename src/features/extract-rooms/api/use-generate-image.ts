@@ -1,5 +1,4 @@
 import { client } from "@/lib/rpc";
-import { ExtractRoom } from "@/types/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,7 @@ export const useGenerateImages = () => {
         onSuccess: (data) => {
             const { extract_room_id } = data as SuccessResponse;
 
-            // route.push(`/generate-rooms-images?generated_rooms_image_id=${extract_room_id}`)
+            route.push(`/generate-rooms-images?generated_rooms_image_id=${extract_room_id}`)
 
             toast.success("Success fully generated images")
 

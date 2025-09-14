@@ -33,6 +33,13 @@ interface Props {
     extract_room_id: string;
 }
 
+/**
+ * ExtractRooms view.
+ * Renders extracted rooms with search and pagination, plus generation form.
+ *
+ * @param extract_room_id - Identifier for the extract-room session to fetch and display.
+ * @returns JSX element rendering the extracted rooms UI.
+ */
 export const ExtractRooms = ({ extract_room_id }: Props) => {
     const { data, isLoading, isError } = useGetExtractedRooms(extract_room_id);
     const [isOpen, setIsOpen] = useState(false)

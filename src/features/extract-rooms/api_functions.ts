@@ -22,6 +22,12 @@ export interface ExtractedRoom {
     $collectionId: string;
 }
 
+/**
+ * Get extracted rooms for a given extract-room ID.
+ *
+ * @param {string} extract_room_id - The extract-room identifier to query.
+ * @returns {Promise<{ total: number; documents: ExtractedRoom[] }>} Total count and documents list.
+ */
 export const onGetExtractedRooms = async (extract_room_id: string): Promise<{ total: number, documents: ExtractedRoom[] }> => {
     const response = await client.api.extract_rooms[":extract_room_id"].$get({
         param: { extract_room_id }

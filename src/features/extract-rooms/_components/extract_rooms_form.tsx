@@ -1,4 +1,5 @@
 "use client"
+// ExtractRoomsForm: Handles room style prompt input and image generation.
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea'
@@ -13,6 +14,14 @@ interface Props {
   extract_room_id: string
 }
 
+/**
+ * ExtractRoomsForm component.
+ * Handles room style prompt input and image generation.
+ *
+ * @param rooms - Rooms to generate images for.
+ * @param extract_room_id - Identifier for the extract-room operation.
+ * @returns JSX element rendering the prompt and action.
+ */
 export const ExtractRoomsForm = ({ rooms, extract_room_id }: Props) => {
   const { mutate, isPending } = useGenerateImages();
   const [value, setValue] = useState("");
