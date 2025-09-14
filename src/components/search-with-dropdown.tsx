@@ -38,6 +38,15 @@ interface Props  {
     onChangeValue : (value : string) => void
 }
 
+/**
+ * SearchWithDropDown component.
+ * Provides a searchable dropdown of room types with optional icons.
+ *
+ * @param rooms - List of room options with `value` and `label`.
+ * @param isShowIcons - Whether to display icons next to options.
+ * @param onChangeValue - Callback fired with the selected room value.
+ * @returns JSX element for the searchable dropdown.
+ */
 export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue} : Props) => {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");

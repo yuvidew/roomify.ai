@@ -30,7 +30,7 @@ export const RoomsContainer = () => {
                 <p className="text-sm text-muted-foreground">
                     Total floor area:{" "}
                     <span className="font-medium">
-                        {rooms.reduce((sum, room) => sum + room.approxAreaSqFt, 0)} sq ft
+                        {/* {rooms.reduce((sum, room) => sum + room.approxAreaSqFt, 0)} sq ft */}
                     </span>
                 </p>
 
