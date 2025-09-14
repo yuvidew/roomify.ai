@@ -18,9 +18,14 @@ export const useGenerateImages = () => {
 
     return useMutation<ResponseType, Error, RequestType>({
         mutationFn: async ({ form }) => {
-            const response = await client.api.extract_rooms.generate_images.$post({ form });
+            // const response = await client.api.extract_rooms.generate_images.$post({ form });
 
-            return await response.json();
+            const response = await client.api.extract_rooms.generate_images.$post({ form });
+            const payload = await response.json();
+            if (!response.ok) {
+                throw new Error("Generate images failed");
+            }
+            return payload;
         },
         onSuccess: (data) => {
             const { extract_room_id } = data as SuccessResponse;

@@ -160,18 +160,12 @@ const app = new Hono()
                     file.mediaType.startsWith('image/')
                 ) || [];
 
-                console.log("the response ", {
-                    text: result.text,
-                    images: images.map(image => ({
-                        base64: image.base64,
-                        mediaType: image.mediaType
-                    })),
-                });
+                
 
                 if (!images && !result.text) {
                     return c.json({
                         message: "Failed to generate images"
-                    })
+                    },502)
                 }
 
                 if (images.length > 0) {
