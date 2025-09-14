@@ -11,10 +11,8 @@ import {
     DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer"
 
 import {
@@ -172,7 +170,7 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
                                 <DrawerDescription></DrawerDescription>
                             </VisuallyHidden>
                             <ExtractRoomsForm rooms={rooms} extract_room_id={extract_room_id} />
-                            <DrawerClose>
+                            <DrawerClose asChild>
                                 <Button variant={"outline"} className=" w-full" type="button">
                                     Cancel
                                 </Button>

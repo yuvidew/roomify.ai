@@ -25,6 +25,7 @@ export const useUploadBluePrint = () => {
         onSuccess: (data) => {
             const {extract_rooms} = data as SuccessResponse;
             route.push(`/extract-rooms?extract_room_id=${extract_rooms.$id}`);
+            toast.success("Successfully upload blue print")
             queryClient.invalidateQueries({
                 queryKey: ["get-extracted-rooms", "current-user"]
             })
