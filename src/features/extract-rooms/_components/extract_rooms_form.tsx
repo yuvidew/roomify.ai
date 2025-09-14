@@ -2,11 +2,16 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea'
+import { Room } from '@/types/type';
 import { ScanSearch } from 'lucide-react';
 import React, { useState } from 'react'
 
+interface Props {
+  rooms : Room[]
+  extract_room_id : string
+}
 
-export const ExtractRoomsForm = () => {
+export const ExtractRoomsForm = ({} : Props) => {
   const [value , setValue] = useState("");
 
   // TODO : submit the prompt with extract rooms array

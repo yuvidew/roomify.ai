@@ -103,6 +103,7 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
                                         setOpen(false)
                                         onChangeValue(currentValue === value ? "" : currentValue)
                                     }}
+                                    className="capitalize"
                                 >
                                     {isShowIcons && getIcon(room.label)}
                                     {room.label}

@@ -8,12 +8,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { ScanSearch, Search } from "lucide-react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { SearchCommand } from "./search-command"
 import { useState } from "react"
 
 export const NavMain = () => {
   const pathname = usePathname();
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -22,14 +23,14 @@ export const NavMain = () => {
         <SidebarGroupContent className="flex flex-col gap-2">
           <SidebarMenu>
             <SidebarMenuItem >
-              <SidebarMenuButton isActive={"/dashboard" === pathname} tooltip={"Upload blue print"}>
+              <SidebarMenuButton onClick={() => router.push("/dashboard")} isActive={"/dashboard" === pathname} tooltip={"Upload blue print"}>
                 {<ScanSearch />}
                 <span>Upload blue print</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem >
-              <SidebarMenuButton onClick={() => setIsOpen(!isOpen)} tooltip={"Search"}>
+              <SidebarMenuButton  onClick={() => setIsOpen(!isOpen)} tooltip={"Search"}>
                 {<Search />}
                 <span>Search</span>
               </SidebarMenuButton>

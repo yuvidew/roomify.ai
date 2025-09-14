@@ -26,7 +26,7 @@ export const useUploadBluePrint = () => {
             const {extract_rooms} = data as SuccessResponse;
             route.push(`/extract-rooms?extract_room_id=${extract_rooms.$id}`);
             queryClient.invalidateQueries({
-                queryKey: ["get-extracted-rooms"]
+                queryKey: ["get-extracted-rooms", "current-user"]
             })
         },
         onError: () => {
