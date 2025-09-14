@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import rooms from "@/lib/demy.json";
 import { SearchWithDropDown } from "@/components/search-with-dropdown";
-import { RoomCard } from "../_components/room";
+import { RoomCard } from "../../../../features/extract-rooms/_components/room";
 
 import {
     Pagination,
@@ -12,7 +12,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import { ExtractRoomsForm } from "../_components/extract_rooms_form";
+import { ExtractRoomsForm } from "../../../../features/extract-rooms/_components/extract_rooms_form";
 
 export const ExtractRooms = () => {
     const [currentPage, setCurrentPage] = useState(1);
