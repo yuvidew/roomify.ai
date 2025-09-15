@@ -20,6 +20,7 @@ export const useGenerateImages = () => {
         mutationFn: async ({ form }) => {
             const response = await client.api.generate_rooms_images.$post({ form });
 
+
             return await response.json();
         },
         onSuccess: (data) => {
@@ -30,7 +31,7 @@ export const useGenerateImages = () => {
             toast.success("Success fully generated images")
 
             queryClient.invalidateQueries({
-                queryKey: ["get-extracted-rooms", "current-user" , "get-generated-images"]
+                queryKey: ["get-extracted-rooms", "current-user" , "get-generated-images" , "get-rooms-list"]
             })
         },
         onError: () => {

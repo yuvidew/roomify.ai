@@ -7,17 +7,17 @@ import { google } from "@ai-sdk/google";
 import { generateText } from 'ai';
 import { AI_GENERATED_ROOMS_TABLE_ID, DATABASE_ID } from "@/lib/config";
 import { ID, Query } from "node-appwrite";
-import { Room } from "@/types/type";
 import { GenerateImagesSchema } from "../schema";
 
-function buildCombinedPrompt(rooms: Room[], prompt: string): string {
+function buildCombinedPrompt(rooms: string, prompt: string): string {
     return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
 
     For each room, provide:
     1. A written description starting with "<ROOM NAME> — ~<AREA> sqft"
     2. A photorealistic interior rendering image
+    3. First identify the room type (e.g., bedroom, bathroom, kitchen, living room, dining room, office, closet, etc.)
 
-    FLOOR PLAN DATA:${JSON.stringify(rooms)}
+    FLOOR PLAN DATA:${rooms}
 
     Style: ${prompt}`;
 }
@@ -29,15 +29,15 @@ const app = new Hono()
         sessionMiddleware,
         async (c) => {
             try {
-
                 const database = c.get("databases");
                 const { rooms, extract_room_id, prompt } = c.req.valid("form");
+
 
                 if (!extract_room_id) {
                     return c.json({ message: "Extract room id is required" });
                 }
 
-                if (!rooms || !Array.isArray(rooms)) {
+                if (!rooms ) {
                     return c.json({ message: "Rooms array is required" });
                 }
 
@@ -57,7 +57,6 @@ const app = new Hono()
                         message: "Failed to generate images"
                     })
                 }
-
 
                 const images = result.files?.filter(file =>
                     file.mediaType.startsWith('image/')
@@ -105,7 +104,6 @@ const app = new Hono()
         const database = c.get("databases");
         const { extract_room_id } = c.req.param();
 
-        console.log("the api is calling ");
 
         if (!extract_room_id) {
             return c.json({

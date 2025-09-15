@@ -130,6 +130,28 @@ const app = new Hono()
             documents: extracted_rooms.documents,
         });
     })
+    .get("/get_rooms_all_list", sessionMiddleware, async (c) => {
+        console.log("the api is calling ");
+        const user = c.get("user");
+        const database = c.get("databases");
+        if (!user) {
+            return c.json({
+                message: "User id is required!",
+            });
+        }
+
+        const extracted_rooms = await database.listDocuments(
+            DATABASE_ID,
+            AI_EXTRACT_ROOMS_TABLE_ID,
+            // [Query.equal("user_id", user.$id)]
+        )
+
+        console.log("the extracted_rooms id" , extracted_rooms);
+
+        return c.json({
+            message : "the is sended"
+        });
+    })
     ;
 
 export default app;

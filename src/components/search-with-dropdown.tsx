@@ -33,6 +33,7 @@ interface Props  {
     rooms : {
         value : string,
         label : string
+        count : number
     }[],
     isShowIcons? : boolean,
     onChangeValue : (value : string) => void
@@ -101,7 +102,7 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
                                     setOpen(false)
                                 }}
                             >
-                                All
+                                All 
                             </CommandItem>
                             {rooms.map((room) => (
                                 <CommandItem
@@ -115,7 +116,7 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
                                     className="capitalize"
                                 >
                                     {isShowIcons && getIcon(room.label)}
-                                    {room.label}
+                                    {room.label} ({room.count})
                                     <Check
                                         className={cn(
                                             "ml-auto",

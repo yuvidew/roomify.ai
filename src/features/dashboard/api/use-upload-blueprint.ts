@@ -27,7 +27,7 @@ export const useUploadBluePrint = () => {
             route.push(`/extract-rooms?extract_room_id=${extract_rooms.$id}`);
             toast.success("Successfully upload blue print")
             queryClient.invalidateQueries({
-                queryKey: ["get-extracted-rooms", "current-user"]
+                queryKey: ["get-extracted-rooms", "current-user" , "get-generated-images" , "get-rooms-list"]
             })
         },
         onError: () => {
