@@ -25,7 +25,7 @@ export const useGenerateImages = () => {
         onSuccess: (data) => {
             const { extract_room_id } = data as SuccessResponse;
 
-            route.push(`/generate-rooms-images?generated_rooms_image_id=${extract_room_id}`)
+            route.push(`/generate-rooms-images?extract_room_id=${extract_room_id}`)
 
             toast.success("Success fully generated images")
 
