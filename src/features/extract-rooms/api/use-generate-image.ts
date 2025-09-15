@@ -36,7 +36,7 @@ export const useGenerateImages = () => {
             queryClient.invalidateQueries({ queryKey: ["get-extracted-rooms"] });
             queryClient.invalidateQueries({ queryKey: ["current-user"] });
             queryClient.invalidateQueries({ queryKey: ["get-generated-images"] });
-            queryClient.invalidateQueries({ queryKey: ["get-rooms-list"] });
+            queryClient.invalidateQueries({ queryKey: ["get_rooms_all_list"] });
         },
         onError: () => {
             toast.error("Failed to upload blue print.");
