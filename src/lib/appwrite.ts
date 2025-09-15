@@ -4,11 +4,12 @@ import { Client, Account, Users, Databases } from "node-appwrite";
 import { cookies } from "next/headers";
 
 import { AUTH_COOKIE } from "@/features/auth/constants";
+import { ENDPOINT, PROJECT_ID, APPWRITER_KEY } from "@/lib/config";
 
 export const createSessionClient = async () => {
     const client = new Client()
-        .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-        .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+        .setEndpoint(ENDPOINT)
+        .setProject(PROJECT_ID);
 
     const session = await (await cookies()).get(AUTH_COOKIE);
 
@@ -32,9 +33,9 @@ export const createSessionClient = async () => {
 
 export const createAdminClient = async () => {
     const client = new Client()
-        .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-        .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
-        .setKey(process.env.NEXT_APPWRITE_KEY!);
+        .setEndpoint(ENDPOINT)
+        .setProject(PROJECT_ID)
+        .setKey(APPWRITER_KEY);
 
     return {
         get account() {

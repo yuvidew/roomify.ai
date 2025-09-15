@@ -138,12 +138,13 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
                             ? [1, 2, 3]
                                 .map((_, i) => <Skeleton key={i} className=" h-full w-full" />)
                             : paginating_rooms.map(
-                                ({ type, name, notes, approxAreaSqFt }, i) => (
+                                ({ type, name, notes, approxAreaSqFt , dimensions }, i) => (
                                     <RoomCard
                                         key={i}
                                         type={type}
                                         name={name}
                                         notes={notes}
+                                        dimensions = {dimensions}
                                         approxAreaSqFt={approxAreaSqFt}
                                     />
                                 )
