@@ -1,0 +1,98 @@
+"use client"
+import { Button } from '@/components/ui/button';
+import { Bookmark, RotateCcw } from 'lucide-react';
+import React, { useState } from 'react';
+import rooms_images from "@/lib/demy2.json"
+
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+import Image from 'next/image';
+
+interface Props {
+    extract_room_id: string;
+}
+
+export const GenerateRoomsImageView = ({ extract_room_id }: Props) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const REVIEWS_PER_PAGE = 4;
+
+    const totalPages = Math.ceil(rooms_images.length / REVIEWS_PER_PAGE);
+    return (
+        <main className=" p-6 h-full lg:flex items-start relative gap-4">
+            {/* start to listing generated rooms image */}
+            <div className=' bg-sidebar w-full h-full flex flex-col gap-4 p-4 rounded-md'>
+                {/* start to pagination and save/regenerate button */}
+                <div className=' flex items-center justify-between'>
+                    {/* start to save or regenerate button */}
+                    <div className=' flex items-center gap-3'>
+                        <Button>
+                            <Bookmark /> Save
+                        </Button>
+
+                        <Button variant={"outline"}>
+                            <RotateCcw />
+                            Re-generate
+                        </Button>
+                    </div>
+
+                    {rooms_images?.length > 5 && (
+                        <Pagination className=" justify-end">
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        className={`cursor-pointer ${currentPage === 1
+                                            ? "pointer-events-none opacity-50"
+                                            : ""
+                                            }`}
+                                        onClick={() =>
+                                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                                        }
+                                        aria-disabled={currentPage === 1}
+                                    />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext
+                                        className={`cursor-pointer ${currentPage === totalPages
+                                            ? "pointer-events-none opacity-50"
+                                            : ""
+                                            }`}
+                                        onClick={() =>
+                                            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                                        }
+                                        aria-disabled={currentPage === totalPages}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
+                    {/* end to save or regenerate button */}
+                </div>
+                {/* end to pagination and save/regenerate button */}
+
+                {/* start to listing images */}
+                <div className='imgCont gap-3'>
+                    {rooms_images.map(({ images }, i) => (
+                        <Image
+                            key={i}
+                            src={images}
+                            alt={`images-${i}`}
+                            className="w-full mb-2"
+                            layout="responsive"      // Responsive layout
+                            width={16}               // Aspect ratio: width
+                            height={9}
+
+                        />
+                    ))}
+                </div>
+                {/* end to listing images */}
+            </div>
+            {/* end to listing generated rooms image */}
+        </main>
+    )
+}
+
