@@ -38,7 +38,7 @@ const app = new Hono()
                 }
 
                 if (!rooms ) {
-                    return c.json({ message: "Rooms array is required" });
+                    return c.json({ message: "Rooms is required" });
                 }
 
                 const result = await generateText({
