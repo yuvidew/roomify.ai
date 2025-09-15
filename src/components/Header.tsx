@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 const HEADER_TITLES: Record<string, string> = {
     "/dashboard": "Dashboard",
     "/extract-rooms": "Extracted Rooms",
+    "/generate-rooms-images" : "Generated rooms images"
 }
 
 export const Header = () => {

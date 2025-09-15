@@ -97,7 +97,7 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
                                 // value="all"
                                 onSelect={() => {
                                     onChangeValue("")
-                                    // setValue("all")
+                                    setValue("")
                                     setOpen(false)
                                 }}
                             >

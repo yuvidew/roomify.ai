@@ -7,6 +7,11 @@ interface Props {
     searchParams : { extract_room_id?: string } 
 }
 
+/**
+ * Extract Rooms page.
+ * Prefetches extracted rooms and hydrates client state.
+ * @param searchParams - Query params with optional `extract_room_id`.
+ */
 export default async function ExtractRoomsPage({searchParams} : Props) {
     const queryClient = getQueryClient();
 
