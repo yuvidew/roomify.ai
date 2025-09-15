@@ -1,7 +1,5 @@
 "use client"
 
-
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,6 +16,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar"
+import { useGetRoomsList } from "@/features/extract-rooms/api/use-get-rooms-list"
 import { EllipsisVertical, Ellipsis, Folder, LucideIcon, Share, Trash2 } from "lucide-react"
 
 export function NavDocuments({
@@ -30,6 +29,10 @@ export function NavDocuments({
     }[]
 }) {
     const { isMobile } = useSidebar()
+
+    const {data, isLoading , isError} = useGetRoomsList();
+
+    console.log("the rooms list" , data , isError , isLoading);
 
     return (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">

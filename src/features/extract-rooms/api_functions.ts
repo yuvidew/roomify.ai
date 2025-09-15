@@ -34,7 +34,7 @@ export const onGetExtractedRooms = async (extract_room_id: string): Promise<{ to
     })
 
     if (!response.ok) {
-        throw new Error("Failed to fetch task.");
+        throw new Error("Failed to fetch rooms.");
     }
     const json = await response.json()
 

@@ -56,6 +56,7 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
         return rooms_type.map((type) => ({
             value: type,
             label: type,
+            count: rooms.filter(room => room.type === type).length
         }));
     }, [rooms]);
 

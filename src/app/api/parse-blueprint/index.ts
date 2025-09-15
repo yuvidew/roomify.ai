@@ -11,8 +11,6 @@ export interface FloorPlanAnalysis {
 export const analyzeFloorPlan = async (
     file: File
 ): Promise<FloorPlanAnalysis> => {
-    // const form = await req.formData();
-    // const file = form.get("blueprint") as File;
 
     const uploaded = await ai.files.upload({
         file,
@@ -25,19 +23,43 @@ export const analyzeFloorPlan = async (
         model: "gemini-2.0-flash-exp",
         contents: createUserContent([
             createPartFromUri(uploaded.uri!, uploaded.mimeType!),
-            `You are an architect's assistant.  
-Given a floor plan image, extract a structured list of spaces.  
+            // `You are an architect's assistant.  
+            // Given a floor plan image, extract a structured list of spaces.  
 
-For each space, provide the following fields:  
-- name (string)  
-- type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)  
-- approxAreaSqFt (number, estimate conservatively if not provided)  
-- dimensions (string, e.g., "10x12 ft")  
-- notes (string, any relevant observations)  
-- labels (string, any text or labels present in the image)  
+            // For each space, provide the following fields:  
+            // - name (string)  
+            // - type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)  
+            // - approxAreaSqFt (number, estimate conservatively if not provided)  
+            // - dimensions (string, e.g., "10x12 ft")  
+            // - notes (string, any relevant observations)  
+            // - labels (string, any text or labels present in the image)  
 
-Ensure the output is clean, consistent, and formatted as structured data.  
-If information is missing, infer it reasonably and document assumptions in the notes field.`,
+            // Ensure the output is clean, consistent, and formatted as structured data.  
+            // If information is missing, infer it reasonably and document assumptions in the notes field.`,
+            `You are an architect's assistant. Given a floor plan image, extract a structured list of spaces and generate a comprehensive title for the entire analysis.
+
+            FIRST, generate a title for the whole extract that includes:
+            - Property type (e.g., "2-Bedroom Apartment", "Single Family Home", "Office Suite")
+            - Total approximate square footage if determinable
+            - Any distinctive features (e.g., "with Balcony", "Corner Unit", "Split Level")
+
+            THEN, for each space, provide the following fields:
+            - name (string) - specific room identifier
+            - type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)
+            - approxAreaSqFt (number, estimate conservatively if not provided)
+            - dimensions (string, e.g., "10x12 ft")
+            - notes (string, any relevant observations)
+            - labels (string, any text or labels present in the image)
+
+            Format the output as structured data with the title at the top, followed by the room list.
+
+            Ensure the output is clean, consistent, and professionally formatted. If information is missing, infer it reasonably and document assumptions in the notes field.
+
+            Example output format:
+            TITLE: "3-Bedroom Apartment Floor Plan - Approximately 1,200 sq ft with Balcony"
+
+            ROOMS:
+            [structured room data follows...]`
         ]),
 
         config: {

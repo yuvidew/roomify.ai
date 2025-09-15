@@ -8,6 +8,7 @@ import { ScanSearch } from 'lucide-react';
 import React, { useState } from 'react'
 import { useGenerateImages } from '../api/use-generate-image';
 import Spinner from '@/components/Spinner';
+import { ParsedFormValue } from 'hono/types';
 
 interface Props {
   rooms: Room[]
