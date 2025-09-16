@@ -4,7 +4,7 @@ import { onGetGeneratedRoomsImages } from "../api_function"
 
 export const useGetGeneratedRoomsImages = (extract_room_id  :string) => {
     return useQuery({
-        queryKey : ["get-generated-images"],
+        queryKey : ["get-generated-images" , "extract_room_id"],
         queryFn: () => onGetGeneratedRoomsImages(extract_room_id!)
     })
 } 
