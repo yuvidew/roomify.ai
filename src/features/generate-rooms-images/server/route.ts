@@ -111,16 +111,48 @@ const app = new Hono()
             });
         }
 
-        const generated_rooms_images = await database.listDocuments(
-            DATABASE_ID,
-            AI_GENERATED_ROOMS_TABLE_ID,
-            [Query.equal("extract_room_id", extract_room_id)]
-        );
+        // Basic retry helper for transient 503s from upstream (e.g., first byte timeout)
+        const retry = async <T>(fn: () => Promise<T>, attempts = 3, base = 250): Promise<T> => {
+            let lastErr: unknown;
+            for (let i = 0; i < attempts; i++) {
+                try {
+                    return await fn();
+                } catch (err) {
+                    lastErr = err;
+                    // small exponential backoff with jitter
+                    const delay = base * Math.pow(2, i) + Math.floor(Math.random() * 100);
+                    await new Promise((r) => setTimeout(r, delay));
+                }
+            }
+            throw lastErr;
+        };
 
-        return c.json({
-            total: generated_rooms_images.total,
-            documents: generated_rooms_images.documents,
-        });
+        try {
+            const generated_rooms_images = await retry(() =>
+                database.listDocuments(
+                    DATABASE_ID,
+                    AI_GENERATED_ROOMS_TABLE_ID,
+                    [
+                        Query.equal("extract_room_id", extract_room_id),
+                        Query.orderDesc("$createdAt"),
+                        Query.limit(50),
+                    ]
+                )
+            );
+
+            return c.json({
+                total: generated_rooms_images.total,
+                documents: generated_rooms_images.documents,
+            });
+        } catch (error) {
+            console.error("listDocuments failed", error);
+            return c.json(
+                {
+                    error: "Failed to fetch generated room images",
+                },
+                503
+            );
+        }
     });
 
 export default app;

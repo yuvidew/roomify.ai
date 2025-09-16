@@ -23,19 +23,6 @@ export const analyzeFloorPlan = async (
         model: "gemini-2.0-flash-exp",
         contents: createUserContent([
             createPartFromUri(uploaded.uri!, uploaded.mimeType!),
-            // `You are an architect's assistant.  
-            // Given a floor plan image, extract a structured list of spaces.  
-
-            // For each space, provide the following fields:  
-            // - name (string)  
-            // - type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)  
-            // - approxAreaSqFt (number, estimate conservatively if not provided)  
-            // - dimensions (string, e.g., "10x12 ft")  
-            // - notes (string, any relevant observations)  
-            // - labels (string, any text or labels present in the image)  
-
-            // Ensure the output is clean, consistent, and formatted as structured data.  
-            // If information is missing, infer it reasonably and document assumptions in the notes field.`,
             `You are an architect's assistant. Given a floor plan image, extract a structured list of spaces and generate a comprehensive title for the entire analysis.
 
             FIRST, generate a title for the whole extract that includes:
@@ -47,7 +34,13 @@ export const analyzeFloorPlan = async (
             - name (string) - specific room identifier
             - type (enum: bedroom, kitchen, hall, living, dining, bathroom, balcony, storage, other)
             - approxAreaSqFt (number, estimate conservatively if not provided)
-            - dimensions (string, e.g., "10x12 ft")
+            - dimensions (string) - IMPORTANT: Extract or estimate room dimensions in format "length x width ft" (e.g., "12 x 10 ft", "8 x 6 ft"). If no measurements are visible:
+              * For bedrooms: estimate 10-15 ft per side
+              * For bathrooms: estimate 5-8 ft per side  
+              * For kitchens: estimate 8-12 ft per side
+              * For living rooms: estimate 12-20 ft per side
+              * Scale relative to other rooms in the plan
+              * NEVER use "Unclear" - always provide an estimated dimension
             - notes (string, any relevant observations)
             - labels (string, any text or labels present in the image)
 

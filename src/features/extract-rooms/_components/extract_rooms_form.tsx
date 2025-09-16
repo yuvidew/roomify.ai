@@ -39,12 +39,12 @@ export const ExtractRoomsForm = ({ rooms, extract_room_id }: Props) => {
 
   return (
 
-    <div className=' flex flex-col gap-2'>
+    <div className=' flex flex-col w-full gap-2'>
       <Label className=' mb-2 text-lg'>
         Describe your desired room styles
       </Label>
       <Textarea
-        className=' h-64 resize-none'
+        className=' h-64 w-full resize-none'
         placeholder='e.g., Modern bedroom with warm tones and wood accents'
         value={value}
         onChange={(e) => setValue(e.target.value)}

@@ -20,8 +20,8 @@ const app = new Hono()
     })
     .post("/signin", zValidator("json", loginSchema), async (c) => {
         console.log("sign in api is calling");
+        // const account = c.get("account")
         const { email, password } = c.req.valid("json");
-
         const { account } = await createAdminClient();
         const session = await account.createEmailPasswordSession(email, password);
 

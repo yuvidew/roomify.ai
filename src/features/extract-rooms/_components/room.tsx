@@ -20,7 +20,7 @@ import { Room } from "@/types/type";
  * @param props.notes - Descriptive notes for the room.
  * @param props.approxAreaSqFt - Approximate area in square feet.
  */
-export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
+export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room) => {
     const matchChar = 205;
     const getIcon = (type: string) => {
         switch (type) {
@@ -56,7 +56,7 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
                         <p className="text-sm text-muted-foreground capitalize">{type}</p>
                     </div>
                     <div className="text-right">
-                        <div className="text-2xl font-bold">260</div>
+                        <div className="text-2xl font-bold">{approxAreaSqFt}</div>
                         <div className="text-xs text-muted-foreground">sq ft</div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt }: Room) => {
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">Dimensions</span>
-                        <span className="text-sm text-muted-foreground">{approxAreaSqFt} ft</span>
+                        <span className="text-sm text-muted-foreground">{dimensions}</span>
                     </div>
 
                     <div className="rounded-md bg-muted p-3">

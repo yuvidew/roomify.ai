@@ -5,7 +5,8 @@ import { onGetGeneratedRoomsImages } from '@/features/generate-rooms-images/api_
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 interface Props {
-    searchParams: { extract_room_id?: string }
+    // In Next.js 14+, searchParams is async and must be awaited
+    searchParams: Promise<{ extract_room_id?: string }>
 }
 
 /**
@@ -16,13 +17,16 @@ interface Props {
 const GenerateRoomsImagePage = async ({ searchParams }: Props) => {
     const queryClient = getQueryClient();
 
+    const params = await searchParams;
+    const extract_room_id = params.extract_room_id!;
+
     await queryClient.prefetchQuery({
         queryKey: ["get-generated-images"],
-        queryFn: () => onGetGeneratedRoomsImages(searchParams.extract_room_id!)
+        queryFn: () => onGetGeneratedRoomsImages(extract_room_id)
     })
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <GenerateRoomsImageView extract_room_id={searchParams.extract_room_id!} />
+            <GenerateRoomsImageView extract_room_id={extract_room_id} />
         </HydrationBoundary>
     )
 }

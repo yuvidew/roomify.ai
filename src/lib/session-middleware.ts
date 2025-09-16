@@ -16,6 +16,7 @@ import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 
 import { AUTH_COOKIE } from "@/features/auth/constants";
+import { ENDPOINT, PROJECT_ID } from "@/lib/config";
 
 type AdditionalContext = {
   Variables: {
@@ -31,8 +32,8 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
   async (c, next) => {
 
     const client = new Client()
-      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+      .setEndpoint(ENDPOINT)
+      .setProject(PROJECT_ID);
 
     const session = getCookie(c, AUTH_COOKIE);
 
@@ -47,7 +48,24 @@ export const sessionMiddleware = createMiddleware<AdditionalContext>(
     const databases = new Databases(client);
     const storage = new Storage(client);
 
-    const user = await account.get();
+    let user: Models.User<Models.Preferences>;
+    try {
+      user = await account.get();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      // Network/DNS issues should surface as a 503 to help debugging
+      if (message.includes("fetch failed") || message.includes("ENOTFOUND")) {
+        return c.json(
+          {
+            error: "Appwrite endpoint unreachable",
+            hint: "Check NEXT_PUBLIC_APPWRITE_ENDPOINT and network connectivity",
+          },
+          503
+        );
+      }
+      // Fall back to unauthorized for other account.get() errors
+      return c.json({ error: "Unauthorized" }, 401);
+    }
 
     c.set("account", account);
     c.set("databases", databases);
