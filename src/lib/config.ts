@@ -23,4 +23,4 @@ const normalizeEndpoint = (raw?: string) => {
   }
 };
 
-export const ENDPOINT = normalizeEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT);
+export const ENDPOINT = normalizeEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!);
