@@ -80,13 +80,14 @@ const app = new Hono()
                                 text: result.text,
                                 image_base64: image.base64,
                                 mediaType: image.mediaType,
-                                save: false
                             }
                         )
                     )
 
                     await Promise.all(createPromises);
                 }
+
+                console.log("the image is store in to database");
 
                 return c.json({
                     extract_room_id

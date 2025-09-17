@@ -131,33 +131,5 @@ const app = new Hono()
             documents: extracted_rooms.documents,
         });
     })
-    .get("/get_rooms_all_list", sessionMiddleware, async (c) => {
-        const user = c.get("user");
-        const database = c.get("databases");
-        if (!user) {
-            return c.json({ message: "User id is required!" }, 401);
-        }
-        // Get this user's extract_room ids
-        const extracts = await database.listDocuments(
-            DATABASE_ID,
-            EXTRACT_ROOMS_TABLE_ID,
-            [Query.equal("user_id", user.$id)]
-        );
-        const extractIds = extracts.documents.map((d) => d.$id);
-        if (extractIds.length === 0) {
-            return c.json({ total: 0, documents: [] });
-        }
-        // Fetch rooms for those extracts
-        const extractedRooms = await database.listDocuments(
-            DATABASE_ID,
-            AI_EXTRACT_ROOMS_TABLE_ID,
-            [Query.equal("extract_room_id", extractIds)]
-        );
-        return c.json({
-            total: extractedRooms.total,
-            documents: extractedRooms.documents,
-        });
-    })
-    ;
 
 export default app;

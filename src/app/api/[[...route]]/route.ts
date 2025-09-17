@@ -3,6 +3,7 @@ import { handle } from "hono/vercel";
 import auth from "@/features/auth/server/route"
 import extract_room from "@/features/extract-rooms/server/route"
 import generate_rooms_images from "@/features/generate-rooms-images/server/route"
+import documents from "@/features/documents/server/route"
 
 
 const app = new Hono().basePath("/api");
@@ -11,7 +12,8 @@ const app = new Hono().basePath("/api");
 const routes = app
     .route("/authentication" , auth)
     .route("/extract_rooms" , extract_room)
-    .route("/generate_rooms_images",generate_rooms_images)
+    .route("/generate_rooms_images", generate_rooms_images)
+    .route("/documents" , documents)
 
 
 export const GET = handle(app);
