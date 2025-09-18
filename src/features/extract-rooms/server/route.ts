@@ -79,7 +79,7 @@ const app = new Hono()
                 ID.unique(),
                 {
                     img_url: uploadedImageUrl!,
-                    img_name: "",
+                    home_description : "",
                     home_title: roomsAnalysis?.title,
                     user_id: user.$id,
                 }

@@ -5,7 +5,7 @@ import { Hono } from "hono";
 
 import { google } from "@ai-sdk/google";
 import { generateText } from 'ai';
-import { AI_GENERATED_ROOMS_TABLE_ID, DATABASE_ID } from "@/lib/config";
+import { AI_GENERATED_ROOMS_TABLE_ID, DATABASE_ID, EXTRACT_ROOMS_TABLE_ID } from "@/lib/config";
 import { ID, Query } from "node-appwrite";
 import { GenerateImagesSchema } from "../schema";
 
@@ -37,7 +37,7 @@ const app = new Hono()
                     return c.json({ message: "Extract room id is required" });
                 }
 
-                if (!rooms ) {
+                if (!rooms) {
                     return c.json({ message: "Rooms is required" });
                 }
 
@@ -54,8 +54,8 @@ const app = new Hono()
 
                 if (!result) {
                     return c.json({
-                        message: "Failed to generate images"
-                    })
+                        message: "Failed to generate image result"
+                    }, 403)
                 }
 
                 const images = result.files?.filter(file =>
@@ -66,28 +66,44 @@ const app = new Hono()
                 if (!images && !result.text) {
                     return c.json({
                         message: "Failed to generate images"
-                    })
+                    }, 403)
                 }
 
-                if (images.length > 0) {
-                    const createPromises = images.map((image) =>
-                        database.createDocument(
+
+                try {
+                    if (images.length > 0) {
+                        const createPromises = images.map((image) =>
+                            database.createDocument(
+                                DATABASE_ID,
+                                AI_GENERATED_ROOMS_TABLE_ID,
+                                ID.unique(),
+                                {
+                                    extract_room_id,
+                                    // text: result.text,
+                                    image_base64: image.base64,
+                                    mediaType: image.mediaType,
+                                }
+                            )
+                        );
+
+                        await Promise.all(createPromises);
+
+                        await database.updateDocument(
                             DATABASE_ID,
-                            AI_GENERATED_ROOMS_TABLE_ID,
-                            ID.unique(),
-                            {
-                                extract_room_id,
-                                text: result.text,
-                                image_base64: image.base64,
-                                mediaType: image.mediaType,
-                            }
-                        )
-                    )
-
-                    await Promise.all(createPromises);
+                            EXTRACT_ROOMS_TABLE_ID,
+                            extract_room_id,
+                            { home_description: result.text }
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error while saving generated images or updating document:", error  instanceof Error ? error?.message : error);
+                    throw new Error(
+                        `Failed to save generated images or update document for extract_room_id: ${extract_room_id}. 
+        Reason: ${error  instanceof Error ? error?.message : "Unknown error"}`
+                    );
                 }
 
-                console.log("the image is store in to database");
+
 
                 return c.json({
                     extract_room_id

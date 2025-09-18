@@ -18,7 +18,7 @@ import { createMiddleware } from "hono/factory";
 import { AUTH_COOKIE } from "@/features/auth/constants";
 import { ENDPOINT, PROJECT_ID } from "@/lib/config";
 
-type AdditionalContext = {
+export type AdditionalContext = {
   Variables: {
     account: AccountType;
     databases: DatabasesType;
