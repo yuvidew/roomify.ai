@@ -4,8 +4,8 @@ import { Hono } from "hono";
 import { Query } from "node-appwrite";
 
 const app = new Hono<AdditionalContext>()
-    .get("/get-rooms-all-list", 
-        sessionMiddleware, 
+    .get("/get-rooms-all-list",
+        sessionMiddleware,
         async (c) => {
             const user = c.get("user");
             const database = c.get("databases");
@@ -21,8 +21,8 @@ const app = new Hono<AdditionalContext>()
 
             if (!extracts) {
                 return c.json({
-                    message : "Failed to get rooms data "
-                }, 400) 
+                    message: "Failed to get rooms data "
+                }, 400)
             }
 
             // const extractIds = extracts.documents.map((d) => d.$id);
@@ -48,7 +48,7 @@ const app = new Hono<AdditionalContext>()
             //     }
             //     throw lastErr;
             // };
-            
+
             // const generatedRooms = await retry(() => database.listDocuments(
             //     DATABASE_ID,
             //     AI_GENERATED_ROOMS_TABLE_ID,
@@ -68,29 +68,29 @@ const app = new Hono<AdditionalContext>()
         }
     )
     .get(
-        "/home-details/:id", 
-        sessionMiddleware, 
+        "/home-details/:id",
+        sessionMiddleware,
         async (c) => {
             const database = c.get("databases");
             const user = c.get("user");
-            const {id} = c.req.param();
+            const { id } = c.req.param();
 
             if (!id) {
                 return c.json({
-                    message : "Id is required to get home  details"
+                    message: "Id is required to get home  details"
                 })
             }
 
             const extracts = await database.listDocuments(
                 DATABASE_ID,
                 EXTRACT_ROOMS_TABLE_ID,
-                [Query.equal("$id", id) , Query.equal("user_id", user.$id)]
+                [Query.equal("$id", id), Query.equal("user_id", user.$id)]
             );
 
             if (extracts.total === 0) {
                 return c.json({
-                    message : "Home details is not found"
-                } , 400)
+                    message: "Home details is not found"
+                }, 400)
             }
 
             const extractIds = extracts.documents.map((d) => d.$id);
@@ -116,7 +116,7 @@ const app = new Hono<AdditionalContext>()
                 }
                 throw lastErr;
             };
-            
+
             const generatedRooms = await retry(() => database.listDocuments(
                 DATABASE_ID,
                 AI_GENERATED_ROOMS_TABLE_ID,
@@ -125,14 +125,14 @@ const app = new Hono<AdditionalContext>()
 
             const mappedDocument = extracts.documents.map(((document) => ({
                 ...document,
-                generated_rooms_images : generatedRooms.documents.filter((generatedRoom) => generatedRoom.extract_room_id === document.$id),
-                extracted_rooms : extractedRooms.documents.filter((extractedRoom) => extractedRoom.extract_room_id === document.$id)
+                generated_rooms_images: generatedRooms.documents.filter((generatedRoom) => generatedRoom.extract_room_id === document.$id),
+                extracted_rooms: extractedRooms.documents.filter((extractedRoom) => extractedRoom.extract_room_id === document.$id)
             })))
 
 
             return c.json(
                 mappedDocument[0]
-            , 200)
+                , 200)
         }
     )
     .get(
@@ -140,21 +140,21 @@ const app = new Hono<AdditionalContext>()
         sessionMiddleware,
         async (c) => {
             const database = c.get("databases");
-            const {id} = c.req.param();
+            const { id } = c.req.param();
 
             if (!id) {
                 return c.json({
-                    message : "Id is required to get Extracted details"
+                    message: "Id is required to get Extracted details"
                 })
             }
 
-            const {total , documents} = await database.listDocuments(
+            const { total, documents } = await database.listDocuments(
                 DATABASE_ID,
                 AI_EXTRACT_ROOMS_TABLE_ID,
                 [Query.equal("extract_room_id", id)]
             );
 
-            c.json( {
+            c.json({
                 total,
                 documents
             })
@@ -165,25 +165,81 @@ const app = new Hono<AdditionalContext>()
         sessionMiddleware,
         async (c) => {
             const database = c.get("databases");
-            const {id} = c.req.param();
+            const { id } = c.req.param();
 
             if (!id) {
                 return c.json({
-                    message : "Id is required to get Extracted details"
+                    message: "Id is required to get Extracted details"
                 })
             }
 
-            const {total , documents} = await database.listDocuments(
+            const { total, documents } = await database.listDocuments(
                 DATABASE_ID,
                 AI_GENERATED_ROOMS_TABLE_ID,
                 [Query.equal("extract_room_id", id)]
             );
 
-            c.json( {
+            c.json({
                 total,
                 documents
             })
         }
     )
+    .delete("/delete/:extract_room_id", sessionMiddleware, async (c) => {
+        const database = c.get("databases");
+        const { extract_room_id } = c.req.param();
+
+
+        if (!extract_room_id) {
+            return c.json({
+                message: "Extract_room_id is required",
+            });
+        }
+
+        try {
+
+            await database.deleteDocument(DATABASE_ID, EXTRACT_ROOMS_TABLE_ID, extract_room_id);
+
+            const deleteRelatedDocs = async (collectionId: string) => {
+                const docs = await database.listDocuments(
+                    DATABASE_ID,
+                    collectionId,
+                    [Query.equal("extract_room_id", extract_room_id)]
+                );
+
+                if (docs.documents.length === 0) return;
+
+                await Promise.all(
+                    docs.documents.map((doc) =>
+                        database.deleteDocument(DATABASE_ID, collectionId, doc.$id)
+                    )
+                );
+            }
+
+            await Promise.all([
+                deleteRelatedDocs(AI_EXTRACT_ROOMS_TABLE_ID),
+                deleteRelatedDocs(AI_GENERATED_ROOMS_TABLE_ID),
+            ]);
+
+
+            return c.json({
+                message: "Room and related documents deleted successfully",
+                status: "success",
+                extract_room_id,
+            });
+
+        } catch (error) {
+            console.error("Delete home error:", error);
+            return c.json(
+                {
+                    message: "Failed to delete room or related documents",
+                    status: "failed"
+                },
+                500
+            );
+
+        }
+
+    })
 
 export default app;
