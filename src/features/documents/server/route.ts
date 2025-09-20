@@ -22,7 +22,7 @@ const app = new Hono<AdditionalContext>()
             if (!extracts) {
                 return c.json({
                     message : "Failed to get rooms data "
-                }) 
+                }, 400) 
             }
 
             // const extractIds = extracts.documents.map((d) => d.$id);
@@ -72,6 +72,7 @@ const app = new Hono<AdditionalContext>()
         sessionMiddleware, 
         async (c) => {
             const database = c.get("databases");
+            const user = c.get("user");
             const {id} = c.req.param();
 
             if (!id) {
@@ -80,16 +81,58 @@ const app = new Hono<AdditionalContext>()
                 })
             }
 
-            const {total , documents} = await database.listDocuments(
+            const extracts = await database.listDocuments(
                 DATABASE_ID,
                 EXTRACT_ROOMS_TABLE_ID,
-                [Query.equal("$id", id)]
+                [Query.equal("$id", id) , Query.equal("user_id", user.$id)]
             );
 
-            return c.json( {
-                total,
-                documents
-            })
+            if (extracts.total === 0) {
+                return c.json({
+                    message : "Home details is not found"
+                } , 400)
+            }
+
+            const extractIds = extracts.documents.map((d) => d.$id);
+            if (extractIds.length === 0) {
+                return c.json({ total: 0, documents: [] });
+            }
+            const extractedRooms = await database.listDocuments(
+                DATABASE_ID,
+                AI_EXTRACT_ROOMS_TABLE_ID,
+                [Query.equal("extract_room_id", extractIds)]
+            );
+
+            const retry = async <T>(fn: () => Promise<T>, attempts = 3, base = 250): Promise<T> => {
+                let lastErr: unknown;
+                for (let i = 0; i < attempts; i++) {
+                    try {
+                        return await fn();
+                    } catch (err) {
+                        lastErr = err;
+                        const delay = base * Math.pow(2, i) + Math.floor(Math.random() * 100);
+                        await new Promise((r) => setTimeout(r, delay));
+                    }
+                }
+                throw lastErr;
+            };
+            
+            const generatedRooms = await retry(() => database.listDocuments(
+                DATABASE_ID,
+                AI_GENERATED_ROOMS_TABLE_ID,
+                [Query.equal("extract_room_id", extractIds)]
+            ));
+
+            const mappedDocument = extracts.documents.map(((document) => ({
+                ...document,
+                generated_rooms_images : generatedRooms.documents.filter((generatedRoom) => generatedRoom.extract_room_id === document.$id),
+                extracted_rooms : extractedRooms.documents.filter((extractedRoom) => extractedRoom.extract_room_id === document.$id)
+            })))
+
+
+            return c.json(
+                mappedDocument[0]
+            , 200)
         }
     )
     .get(

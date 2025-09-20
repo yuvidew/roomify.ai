@@ -10,9 +10,6 @@ export const useGetRoomsList = () => {
             if (!response.ok) {
                 throw new Error("Failed to fetch rooms.");
             }
-
-            console.log("the fetther form", await response.json());
-
             return await response.json()
         }
     })
