@@ -6,6 +6,7 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 import { analyzeFloorPlan, FloorPlanAnalysis } from "@/app/api/parse-blueprint";
 import {
     AI_EXTRACT_ROOMS_TABLE_ID,
+    AI_GENERATED_ROOMS_TABLE_ID,
     BUCKET_ID,
     DATABASE_ID,
     EXTRACT_ROOMS_TABLE_ID,
@@ -79,7 +80,7 @@ const app = new Hono()
                 ID.unique(),
                 {
                     img_url: uploadedImageUrl!,
-                    home_description : "",
+                    home_description: "",
                     home_title: roomsAnalysis?.title,
                     user_id: user.$id,
                 }

@@ -189,6 +189,36 @@ const app = new Hono()
                 503
             );
         }
+    })
+    .delete("/delete/:id", sessionMiddleware , async (c) => {
+        const database = c.get("databases");
+        const {id} = c.req.param();
+
+        if (!id) {
+            return c.json({
+                message: "Image id is required",
+            });
+        }
+
+        try {
+            await database.deleteDocument(
+                DATABASE_ID,
+                AI_GENERATED_ROOMS_TABLE_ID,
+                id
+            )
+
+            return c.json({
+                message: "Room image deleted successfully",
+                status: "success",
+                id,
+            }); 
+        } catch (error) {
+            return c.json({
+                message: "Failed to delete room image",
+                status: "success",
+                id,
+            }); 
+        }
     });
 
 export default app;

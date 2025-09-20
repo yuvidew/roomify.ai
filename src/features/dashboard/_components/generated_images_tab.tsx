@@ -1,8 +1,8 @@
 "use client";
-import { Button } from '@/components/ui/button'
+
+import { ImageCard } from '@/components/image-card';
+import { useDeleteImage } from '@/features/generate-rooms-images/api/use-delete-image';
 import { AiGeneratedImage } from '@/types/type'
-import { DownloadIcon } from 'lucide-react'
-import Image from 'next/image'
 import React from 'react'
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
  * @param rooms_images generated image set, e.g. [{ $id: "img1", mediaType: "image/png", image_base64: "..." }].
  */
 export const GeneratedImagesTab = ({ rooms_images }: Props) => {
+    const { mutate, isPending } = useDeleteImage()
     const onDownload = (base64Data: string, fileName: string) => {
         const link = document.createElement("a");
 
@@ -30,26 +31,17 @@ export const GeneratedImagesTab = ({ rooms_images }: Props) => {
         <section className='bg-sidebar w-full h-full flex flex-col gap-4 p-4 rounded-md'>
             <div className='imgCont gap-3'>
                 {rooms_images.map(({ mediaType, image_base64, $id }) => (
-                    <picture
+                    <ImageCard
                         key={$id}
-                        className=' relative'
-                    >
-                        {/* start to download button */}
-                        <div className=' absolute top-3 right-3'>
-                            <Button size={"icon"} onClick={() => onDownload(`data:${mediaType};base64,${image_base64}`, "home")}>
-                                <DownloadIcon />
-                            </Button>
-                        </div>
-                        {/* end to download button */}
-                        <Image
-                            src={`data:${mediaType};base64,${image_base64}`}
-                            alt={`images-${$id}`}
-                            className="w-full mb-3 rounded-md"
-                            layout="responsive"
-                            width={16}
-                            height={9}
-                        />
-                    </picture>
+                        mediaType={mediaType}
+                        image_base64={image_base64}
+                        id={$id}
+                        onDelete={() => mutate(
+                            { param: { id: $id } },
+                        )}
+                        onDownload={() => onDownload(`data:${mediaType};base64,${image_base64}`, "home")}
+                        isLoading={isPending}
+                    />
                 ))}
             </div>
         </section>
