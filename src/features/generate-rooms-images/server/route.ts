@@ -10,15 +10,34 @@ import { ID, Query } from "node-appwrite";
 import { GenerateImagesSchema } from "../schema";
 
 function buildCombinedPrompt(rooms: string, prompt: string): string {
-    return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
+    // return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
 
+    // For each room, provide:
+    // 1. A written description starting with "<ROOM NAME> — ~<AREA> sqft"
+    // 2. A photorealistic interior rendering image
+    // 3. First identify the room type (e.g., bedroom, bathroom, kitchen, living room, dining room, office, closet, etc.)
+
+    // FLOOR PLAN DATA:${rooms}
+
+    // Style: ${prompt}`;
+
+    return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
+    
     For each room, provide:
-    1. A written description starting with "<ROOM NAME> — ~<AREA> sqft"
+    1. A markdown-formatted written description following this structure:
+        - Start with "## <ROOM NAME> — ~<AREA> sqft\\n"
+        - Include "### Room Type\\n[room type]\\n\\n"
+        - Add "### Description\\n[detailed description]\\n\\n" 
+        - End with "### Key Features\\n- [feature 1]\\n- [feature 2]\\n- [feature 3]\\n\\n"
     2. A photorealistic interior rendering image
     3. First identify the room type (e.g., bedroom, bathroom, kitchen, living room, dining room, office, closet, etc.)
-
-    FLOOR PLAN DATA:${rooms}
-
+    
+    Format the written descriptions as markdown text with proper escaping (use \\\\n for line breaks).
+    
+    Example format:
+    "## Master Bedroom — ~180 sqft\\n\\n### Room Type\\nBedroom\\n\\n### Description\\nA spacious master bedroom featuring...\\n\\n### Key Features\\n- Large windows for natural light\\n- Built-in closet space\\n- Hardwood flooring\\n\\n"
+    
+    FLOOR PLAN DATA: ${rooms}
     Style: ${prompt}`;
 }
 
@@ -96,10 +115,10 @@ const app = new Hono()
                         );
                     }
                 } catch (error) {
-                    console.error("Error while saving generated images or updating document:", error  instanceof Error ? error?.message : error);
+                    console.error("Error while saving generated images or updating document:", error instanceof Error ? error?.message : error);
                     throw new Error(
                         `Failed to save generated images or update document for extract_room_id: ${extract_room_id}. 
-        Reason: ${error  instanceof Error ? error?.message : "Unknown error"}`
+        Reason: ${error instanceof Error ? error?.message : "Unknown error"}`
                     );
                 }
 

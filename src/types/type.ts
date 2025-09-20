@@ -33,7 +33,7 @@ export type ExtractRoom =  {
   img_name?: string;
   img_url: string; // can be base64 data URI or external URL
   user_id: string;
-
+  home_description? : string,
   extracted_rooms?: Room[];
   generated_rooms_images?: AiGeneratedImage[];
 }
