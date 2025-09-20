@@ -25,7 +25,6 @@ interface Props {
  * @param open - Whether the dialog is currently open.
  */
 export const SearchCommand = ({ onOpenChange, open }: Props) => {
-    // TODO : listing the all fetched floor list
     const { data, isLoading, isError } = useGetRoomsList();
 
     const documents = Array.isArray(data?.documents) ? data.documents : [];
