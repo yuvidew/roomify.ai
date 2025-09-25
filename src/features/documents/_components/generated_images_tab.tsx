@@ -1,7 +1,6 @@
 "use client";
 
 import { ImageCard } from '@/components/image-card';
-import { useDeleteImage } from '@/features/generate-rooms-images/api/use-delete-image';
 import { AiGeneratedImage } from '@/types/type'
 import React from 'react'
 
@@ -14,7 +13,6 @@ interface Props {
  * @param rooms_images generated image set, e.g. [{ $id: "img1", mediaType: "image/png", image_base64: "..." }].
  */
 export const GeneratedImagesTab = ({ rooms_images }: Props) => {
-    const { mutate, isPending } = useDeleteImage()
     const onDownload = (base64Data: string, fileName: string) => {
         const link = document.createElement("a");
 
@@ -36,11 +34,7 @@ export const GeneratedImagesTab = ({ rooms_images }: Props) => {
                         mediaType={mediaType}
                         image_base64={image_base64}
                         id={$id}
-                        onDelete={() => mutate(
-                            { param: { id: $id } },
-                        )}
                         onDownload={() => onDownload(`data:${mediaType};base64,${image_base64}`, "home")}
-                        isLoading={isPending}
                     />
                 ))}
             </div>

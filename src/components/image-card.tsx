@@ -1,26 +1,30 @@
 import Spinner from '@/components/Spinner'
 import { Button } from '@/components/ui/button'
+import { useDeleteImage } from '@/features/generate-rooms-images/api/use-delete-image'
 import { Download, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
 interface Props {
     id : string,
-    onDelete : () => void,
     onDownload : () => void,
-    isLoading : boolean,
     image_base64 : string,
     mediaType : string
 }
 
-export const ImageCard = ({
+/**
+ * Renders a generated image with controls for download and deletion.
+ * @param id identifier of the generated image asset.
+ * @param onDownload callback invoked when the download button is clicked.
+ * @param image_base64 base64-encoded payload used as the image source.
+ * @param mediaType MIME type used when constructing the data URL.
+ */export const ImageCard = ({
     id,
-    onDelete,
     onDownload,
-    isLoading,
     image_base64,
     mediaType
 } : Props) => {
+    const { mutate, isPending } = useDeleteImage()
     return (
         <picture
             key={id}
@@ -31,9 +35,11 @@ export const ImageCard = ({
                 <Button
                     size={"icon"}
                     variant={"destructive"}
-                    onClick={onDelete}
+                    onClick={() => mutate(
+                            { param: { id } },
+                        )}
                 >
-                    {isLoading ? <Spinner /> : <Trash2 />}
+                    {isPending ? <Spinner /> : <Trash2 />}
                 </Button>
                 <Button size={"icon"} onClick={onDownload}>
                     <Download />
@@ -52,3 +58,4 @@ export const ImageCard = ({
         </picture>
     )
 }
+

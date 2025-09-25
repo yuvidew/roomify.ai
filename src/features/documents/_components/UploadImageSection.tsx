@@ -1,13 +1,22 @@
-import { ExtractRoom } from '@/types/type'
-import Image from 'next/image'
-import React from 'react'
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/github.css';
+import { ExtractRoom } from "@/types/type";
+import Image from "next/image";
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+// import 'highlight.js/styles/github.css';
 
 interface Props {
-    home_details: ExtractRoom
+    home_details: ExtractRoom;
 }
 
 /**
@@ -16,18 +25,38 @@ interface Props {
  */
 export const UploadImageSection = ({ home_details }: Props) => {
     return (
-        <section className='bg-sidebar p-4  rounded-md'>
-
+        <section className="bg-sidebar p-4  rounded-md">
             {/* start to floor plan image */}
-            {/* <picture> */}
-            <Image
-                src={home_details.img_url}
-                alt={home_details.home_title}
-                width={600}
-                height={600}
-                className=' size-28 object-contain'
-            />
-            {/* </picture> */}
+
+            <Dialog>
+                <DialogTrigger>
+                    <Image
+                        src={home_details.img_url}
+                        alt={home_details.home_title}
+                        width={600}
+                        height={600}
+                        className=" size-36 object-contain rounded-md"
+                    />
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="sr-only">
+                            {home_details.home_title || "Floor plan preview"}
+                        </DialogTitle>
+                        <DialogDescription className="sr-only">
+                            Enlarged view of the uploaded floor plan image.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <Image
+                        src={home_details.img_url}
+                        alt={home_details.home_title}
+                        width={600}
+                        height={600}
+                        className=" size-72 object-contain rounded-md"
+                    />
+                </DialogContent>
+            </Dialog>
             {/* end to floor plan image */}
 
             <ReactMarkdown
@@ -41,19 +70,13 @@ export const UploadImageSection = ({ home_details }: Props) => {
                         </h1>
                     ),
                     h2: ({ children }) => (
-                        <h2 className="text-3xl font-semibold  mb-4 mt-6">
-                            {children}
-                        </h2>
+                        <h2 className="text-3xl font-semibold  mb-4 mt-6">{children}</h2>
                     ),
                     h3: ({ children }) => (
-                        <h3 className="text-2xl font-medium  mb-3 mt-4">
-                            {children}
-                        </h3>
+                        <h3 className="text-2xl font-medium  mb-3 mt-4">{children}</h3>
                     ),
                     p: ({ children }) => (
-                        <p className=" mb-4 leading-relaxed">
-                            {children}
-                        </p>
+                        <p className=" mb-4 leading-relaxed">{children}</p>
                     ),
                     ul: ({ children }) => (
                         <ul className="list-disc list-inside mb-4 space-y-2 ">
@@ -65,24 +88,25 @@ export const UploadImageSection = ({ home_details }: Props) => {
                             {children}
                         </ol>
                     ),
-                    li: ({ children }) => (
-                        <li className="ml-4">{children}</li>
-                    ),
+                    li: ({ children }) => <li className="ml-4">{children}</li>,
                     blockquote: ({ children }) => (
                         <blockquote className="border-l-4 border-blue-500 pl-4 italic  bg-gray-50 py-2 mb-4">
                             {children}
                         </blockquote>
                     ),
                     code: ({ node, className, children, ...props }) => {
-                        const match = /language-(\w+)/.exec(className || '');
-                        return  match ? (
+                        const match = /language-(\w+)/.exec(className || "");
+                        return match ? (
                             <pre className="bg-gray-100 rounded-lg p-4 overflow-x-auto mb-4">
                                 <code className={className} {...props}>
                                     {children}
                                 </code>
                             </pre>
                         ) : (
-                            <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                            <code
+                                className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
+                                {...props}
+                            >
                                 {children}
                             </code>
                         );
@@ -110,19 +134,13 @@ export const UploadImageSection = ({ home_details }: Props) => {
                         </th>
                     ),
                     td: ({ children }) => (
-                        <td className="border border-gray-300 px-4 py-2">
-                            {children}
-                        </td>
+                        <td className="border border-gray-300 px-4 py-2">{children}</td>
                     ),
                 }}
             >
                 {home_details.home_description}
             </ReactMarkdown>
-
-
         </section>
-    )
-}
-
-
+    );
+};
 
