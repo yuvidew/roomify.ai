@@ -94,6 +94,7 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
                         <SearchWithDropDown
                             rooms={unique_rooms}
                             onChangeValue={setSelectRoom}
+                            total_length={rooms.length || 0}
                             isShowIcons
                         />
 

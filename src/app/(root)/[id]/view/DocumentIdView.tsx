@@ -9,8 +9,8 @@ import { useGetHomeDetails } from '@/features/documents/api/use-get-home-details
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorCard } from '@/components/ErrorCard'
 import { ExtractRoom } from '@/types/type'
-import { ExtractedRoomsTab } from '@/features/dashboard/_components/extracted_rooms_tab'
-import { GeneratedImagesTab } from '@/features/dashboard/_components/generated_images_tab'
+import { ExtractedRoomsTab } from '@/features/documents/_components/extracted_rooms_tab'
+import { GeneratedImagesTab } from '@/features/documents/_components/generated_images_tab'
 
 interface Props {
     id: string
@@ -23,7 +23,6 @@ interface Props {
 export const DocumentIdView = ({ id }: Props) => {
     const { data, isLoading, isError } = useGetHomeDetails(id);
 
-    console.log("the data of home" , data);
 
     if (isLoading && !data) {
         return (
@@ -77,7 +76,11 @@ export const DocumentIdView = ({ id }: Props) => {
                         <UploadImageSection home_details={homeDetails} />
                     </TabsContent>
                     <TabsContent value="ai-extracted-rooms">
-                        <ExtractedRoomsTab rooms={homeDetails.extracted_rooms!}/>
+                        <ExtractedRoomsTab 
+                            rooms={homeDetails.extracted_rooms!} 
+                            ai_generated_images={homeDetails.home_description?.length || 0}
+                            id = {homeDetails.$id}
+                        />
                     </TabsContent>
                     <TabsContent value="ai-generated-rooms">
                         <GeneratedImagesTab rooms_images={homeDetails.generated_rooms_images!} />

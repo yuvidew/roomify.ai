@@ -6,6 +6,10 @@ interface Props {
     message : string
 }
 
+/**
+ * Shows an error message inside a styled card with an alert icon.
+ * @param message error text to present to the user.
+ */
 export const ErrorCard = ({message} : Props) => {
     return (
         <Card className=' w-96'>
@@ -18,3 +22,5 @@ export const ErrorCard = ({message} : Props) => {
         </Card>
     )
 }
+
+

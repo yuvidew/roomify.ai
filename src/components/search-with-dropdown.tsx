@@ -36,7 +36,8 @@ interface Props  {
         count : number
     }[],
     isShowIcons? : boolean,
-    onChangeValue : (value : string) => void
+    onChangeValue : (value : string) => void,
+    total_length : number
 }
 
 /**
@@ -46,9 +47,10 @@ interface Props  {
  * @param rooms - List of room options with `value` and `label`.
  * @param isShowIcons - Whether to display icons next to options.
  * @param onChangeValue - Callback fired with the selected room value.
+ * @param total_length - Total number of rooms available when 'All' is selected.
  * @returns JSX element for the searchable dropdown.
  */
-export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue} : Props) => {
+export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue , total_length} : Props) => {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
 
@@ -102,7 +104,7 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
                                     setOpen(false)
                                 }}
                             >
-                                All 
+                                All ({total_length})
                             </CommandItem>
                             {rooms.map((room) => (
                                 <CommandItem
@@ -132,3 +134,4 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue}
         </Popover>
     )
 }
+

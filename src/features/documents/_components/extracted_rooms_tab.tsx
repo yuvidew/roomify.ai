@@ -1,19 +1,27 @@
 "use client";
 
 import { SearchWithDropDown } from '@/components/search-with-dropdown';
+import { Button } from '@/components/ui/button';
 import { RoomCard } from '@/features/extract-rooms/_components/room';
-import { Room } from '@/types/type'
+import {  Room } from '@/types/type'
 import React, { useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation';
+import { Sparkles } from 'lucide-react';
 
 interface Props {
-    rooms: Room[]
+    rooms: Room[],
+    ai_generated_images : number,
+    id : string
 }
 
 /**
  * Lists extracted rooms with search/filter controls.
  * @param rooms array of room entries, e.g. [{ name: "Kitchen", type: "Kitchen", notes: "Needs renovation" }].
+ * @param ai_generated_images number of AI-generated images available for the current document.
+ * @param id identifier of the extraction session used for navigation.
  */
-export const ExtractedRoomsTab = ({ rooms }: Props) => {
+export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) => {
+    const route = useRouter()
     const [selectRoom, setSelectRoom] = useState("");
     const unique_rooms = useMemo(() => {
         const rooms_type = [...new Set(rooms.map(({ type }) => type))];
@@ -31,11 +39,23 @@ export const ExtractedRoomsTab = ({ rooms }: Props) => {
     }, [rooms, selectRoom]);
     return (
         <section className=' flex flex-col bg-sidebar gap-4 p-4 rounded-md'>
-            <SearchWithDropDown
-                rooms={unique_rooms}
-                onChangeValue={setSelectRoom}
-                isShowIcons
-            />
+            <div className=' flex items-center justify-between'>
+                <SearchWithDropDown
+                    rooms={unique_rooms}
+                    onChangeValue={setSelectRoom}
+                    total_length={rooms.length || 0}
+                    isShowIcons
+                />
+
+                {ai_generated_images === 0 && (
+                    <Button 
+                        onClick={() => route.push(`/extract-rooms?extract_room_id=${id}`)}
+                    >
+                        <Sparkles className=' size-4' />
+                        Generate images
+                    </Button>
+                )}
+            </div>
 
             {/* start to listing a extract rooms */}
             <div className=" grid lg:grid-cols-2 grid-cols-1 gap-2">

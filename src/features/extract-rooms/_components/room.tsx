@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import React from "react";
+import React, { useState } from "react";
 import {
     Home,
     Bath,
@@ -21,7 +21,7 @@ import { Room } from "@/types/type";
  * @param props.approxAreaSqFt - Approximate area in square feet.
  */
 export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room) => {
-    const matchChar = 205;
+    const [isShow, setIsShow] = useState(false)
     const getIcon = (type: string) => {
         switch (type) {
             case "bedroom":
@@ -70,16 +70,21 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room
                     </div>
 
                     <div className="rounded-md bg-muted p-3">
-                        {/* {notes.length <= matchChar ? (
-                            <p className=" text-sm ">{notes}</p>
-                        ) : (
-                        )} */}
-                            <div className=' relative flex flex-col gap-2'>
-                                <p className=' text-[14px] line-clamp-4 space-x-[3%]  '>
-                                    {/* {notes.slice(0, matchChar)}... */}
-                                    {notes}
-                                </p>
-                            </div>
+                        <div className=' relative flex flex-col gap-2'>
+                            {isShow
+                                ? (
+                                    <p className=' text-[14px]   '>{notes}</p>
+                                ) : (
+                                    <p className=' text-[14px] line-clamp-4 space-x-[3%]  '>
+                                        {notes}
+                                    </p>
+                                )}
+                            {notes.length > 175 && (
+                                <span onClick={() => setIsShow(prev => !prev)} className=" cursor-pointer absolute bottom-0 right-0 text-sm text-primary">
+                                    {isShow ? "see less" :"see more"}
+                                </span>
+                            )}
+                        </div>
 
                     </div>
                 </div>
@@ -89,5 +94,5 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room
 };
 
 export const RoomCardSkeleton = () => {
-    
+
 }
