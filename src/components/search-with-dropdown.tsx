@@ -37,6 +37,7 @@ interface Props  {
     }[],
     isShowIcons? : boolean,
     onChangeValue : (value : string) => void,
+    selectedValue? : string,
     total_length : number
 }
 
@@ -50,9 +51,14 @@ interface Props  {
  * @param total_length - Total number of rooms available when 'All' is selected.
  * @returns JSX element for the searchable dropdown.
  */
-export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue , total_length} : Props) => {
+export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue , total_length , selectedValue = ""} : Props) => {
+    // TODO: solve this if the page is change the search drop down it's now working 
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState("");
+    const [value, setValue] = React.useState(selectedValue);
+
+    React.useEffect(() => {
+        setValue(selectedValue);
+    }, [selectedValue]);
 
     const getIcon = (type: string) => {
             switch (type) {
@@ -111,9 +117,9 @@ export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue 
                                     key={room.value}
                                     value={room.value}
                                     onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
+                                        setValue(currentValue)
                                         setOpen(false)
-                                        onChangeValue(currentValue === value ? "" : currentValue)
+                                        onChangeValue(currentValue)
                                     }}
                                     className="capitalize"
                                 >

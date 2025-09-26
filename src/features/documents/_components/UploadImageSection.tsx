@@ -53,12 +53,13 @@ export const UploadImageSection = ({ home_details }: Props) => {
                         alt={home_details.home_title}
                         width={600}
                         height={600}
-                        className=" size-72 object-contain rounded-md"
+                        className=" size-96 object-contain rounded-md m-auto"
                     />
                 </DialogContent>
             </Dialog>
             {/* end to floor plan image */}
 
+            {/* TODO: solve the show description issue it's not working */}
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}

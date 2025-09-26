@@ -1,15 +1,17 @@
 import Spinner from '@/components/Spinner'
 import { Button } from '@/components/ui/button'
 import { useDeleteImage } from '@/features/generate-rooms-images/api/use-delete-image'
-import { Download, Trash2 } from 'lucide-react'
+import { Download, ScanIcon, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
+import { Hint } from './Hint'
 
 interface Props {
-    id : string,
-    onDownload : () => void,
-    image_base64 : string,
-    mediaType : string
+    id: string,
+    onDownload: () => void,
+    image_base64: string,
+    mediaType: string,
+    onOpen : () => void
 }
 
 /**
@@ -22,8 +24,9 @@ interface Props {
     id,
     onDownload,
     image_base64,
-    mediaType
-} : Props) => {
+    mediaType,
+    onOpen
+}: Props) => {
     const { mutate, isPending } = useDeleteImage()
     return (
         <picture
@@ -32,18 +35,31 @@ interface Props {
         >
             {/* start to download button */}
             <div className=' absolute top-3 right-3 flex items-center gap-3'>
-                <Button
-                    size={"icon"}
-                    variant={"destructive"}
-                    onClick={() => mutate(
+                <Hint label='See full size' side='top' align='center'>
+                    <Button
+                        size={"icon"}
+                        variant={"secondary"}
+                        onClick={onOpen}
+                    >
+                        <ScanIcon />
+                    </Button>
+                </Hint>
+                <Hint label='Delete' side='top' align='center'>
+                    <Button
+                        size={"icon"}
+                        variant={"destructive"}
+                        onClick={() => mutate(
                             { param: { id } },
                         )}
-                >
-                    {isPending ? <Spinner /> : <Trash2 />}
-                </Button>
-                <Button size={"icon"} onClick={onDownload}>
-                    <Download />
-                </Button>
+                    >
+                        {isPending ? <Spinner /> : <Trash2 />}
+                    </Button>
+                </Hint>
+                <Hint label='Download' side='top' align='center'>
+                    <Button size={"icon"} onClick={onDownload}>
+                        <Download />
+                    </Button>
+                </Hint>
             </div>
             {/* end to download button */}
             <Image

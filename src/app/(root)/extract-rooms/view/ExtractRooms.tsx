@@ -50,6 +50,12 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectRoom, setSelectRoom] = useState("");
 
+    const handleRoomChange = (value: string) => {
+        setSelectRoom(value);
+        setCurrentPage(1);
+    };
+
+
     const REVIEWS_PER_PAGE = 4;
     const unique_rooms = useMemo(() => {
         const rooms_type = [...new Set(rooms.map(({ type }) => type))];
@@ -93,7 +99,8 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
                     <div className=" flex items-center justify-between">
                         <SearchWithDropDown
                             rooms={unique_rooms}
-                            onChangeValue={setSelectRoom}
+                            onChangeValue={handleRoomChange}
+                            selectedValue={selectRoom}
                             total_length={rooms.length || 0}
                             isShowIcons
                         />
