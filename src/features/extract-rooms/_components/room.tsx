@@ -70,7 +70,7 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room
                     </div>
 
                     <div className="rounded-md bg-muted p-3">
-                        <div className=' relative flex flex-col gap-2'>
+                        <div className=' flex flex-col gap-2'>
                             {isShow
                                 ? (
                                     <p className=' text-[14px]   '>{notes}</p>
@@ -80,7 +80,7 @@ export const RoomCard = ({ type, name, notes, approxAreaSqFt, dimensions }: Room
                                     </p>
                                 )}
                             {notes.length > 175 && (
-                                <span onClick={() => setIsShow(prev => !prev)} className=" cursor-pointer absolute bottom-0 right-0 text-sm text-primary">
+                                <span onClick={() => setIsShow(prev => !prev)} className=" cursor-pointer text-right bottom-0 right-0 text-sm text-primary">
                                     {isShow ? "see less" :"see more"}
                                 </span>
                             )}

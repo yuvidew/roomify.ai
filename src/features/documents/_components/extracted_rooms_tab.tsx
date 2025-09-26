@@ -4,7 +4,7 @@ import { SearchWithDropDown } from '@/components/search-with-dropdown';
 import { Button } from '@/components/ui/button';
 import { RoomCard } from '@/features/extract-rooms/_components/room';
 import {  Room } from '@/types/type'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
 
@@ -23,6 +23,15 @@ interface Props {
 export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) => {
     const route = useRouter()
     const [selectRoom, setSelectRoom] = useState("");
+    const roomsSignature = useMemo(
+        () => rooms.map(({ type }, index) => `${index}:${type}`).join("|"),
+        [rooms]
+    );
+
+    useEffect(() => {
+        setSelectRoom("");
+    }, [roomsSignature, id]);
+
     const unique_rooms = useMemo(() => {
         const rooms_type = [...new Set(rooms.map(({ type }) => type))];
 
@@ -33,8 +42,14 @@ export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) =>
         }));
     }, [rooms]);
     const filter_rooms = useMemo(() => {
+        if (!selectRoom) {
+            return rooms;
+        }
+
+        const normalized = selectRoom.toLowerCase();
+
         return rooms.filter(({ type }) =>
-            type.toLowerCase().includes(selectRoom.toLowerCase())
+            type.toLowerCase().includes(normalized)
         );
     }, [rooms, selectRoom]);
     return (
@@ -43,6 +58,7 @@ export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) =>
                 <SearchWithDropDown
                     rooms={unique_rooms}
                     onChangeValue={setSelectRoom}
+                    selectedValue={selectRoom}
                     total_length={rooms.length || 0}
                     isShowIcons
                 />
