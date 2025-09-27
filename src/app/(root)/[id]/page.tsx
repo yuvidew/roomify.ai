@@ -6,10 +6,11 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 
 
-export default async function DocumentIdPage ({ params }: { params: { id: string } }){
+export default async function DocumentIdPage({ params }: { params: Promise<{ id: string }> }) {
     const queryClient = getQueryClient();
 
-    const {id} = params;
+    const { id } = await params;
+
 
     await queryClient.prefetchQuery({
         queryKey : ["get-home-details" , id],

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScanSearch, Upload } from "lucide-react";
+import { ScanSearch, Trash2, Upload } from "lucide-react";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -103,13 +103,15 @@ export const DashboardView = () => {
                                                 <Upload className=" text-primary size-8" />
                                                 <p>Upload</p>
                                             </div>
+
+
                                         </label>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         ) : (
-                            <div className="border cursor-pointer h-96 py-5 rounded-md flex items-center justify-center bg-sidebar-accent ">
+                            <div className="border cursor-pointer h-96 py-5 rounded-md flex items-center justify-center bg-sidebar-accent relative">
                                 <Image
                                     src={upload_url}
                                     alt="Uploaded image"
@@ -117,6 +119,14 @@ export const DashboardView = () => {
                                     height={500}
                                     className=" size-full object-contain"
                                 />
+
+                                {/* start to delete button */}
+                                <div className=" absolute top-2 right-2">
+                                    <Button onClick={() => setUploadUrl(undefined)} size={"icon"} variant={"outline"} >
+                                        <Trash2 />
+                                    </Button>
+                                </div>
+                                {/* end to delete button */}
                             </div>
                         )}
 
