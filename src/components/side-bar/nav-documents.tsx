@@ -20,12 +20,14 @@ import { useGetRoomsList } from "@/features/documents/api/use-get-rooms-list"
 import { EllipsisVertical, Ellipsis, Folder, Share, Trash2, House } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useParams,  useRouter } from "next/navigation"
 import { useDeleteHomeDocument } from "@/features/dashboard/api/use-delete-home-document"
 import Spinner from "../Spinner"
 
 export const NavDocuments = () => {
     // TODO: implement a more click button logic if i click the more button then show the all list 
+    const {id} = useParams();
+
     const { isMobile } = useSidebar();
     const router = useRouter()
 
@@ -49,7 +51,7 @@ export const NavDocuments = () => {
                 ) : 
                     documents.length > 0 ? documents.map((item) => (
                         <SidebarMenuItem key={item.$id}>
-                            <SidebarMenuButton asChild>
+                            <SidebarMenuButton asChild isActive = {item.$id === id}>
                                 <Link href={`/${item.$id}`}>
                                     <House />
                                     <span className=" w-[80%] truncate">{item.home_title}</span>
