@@ -20,7 +20,7 @@ export default async function ExtractRoomsPage({ searchParams }: Props) {
     const extract_room_id = params.extract_room_id!;
 
     await queryClient.prefetchQuery({
-        queryKey: ["get-extracted-rooms"],
+        queryKey: ["get-extracted-rooms" , extract_room_id],
         queryFn: () => onGetExtractedRooms(extract_room_id)
     })
     return (
