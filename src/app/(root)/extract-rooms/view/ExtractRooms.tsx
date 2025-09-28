@@ -28,7 +28,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorCard } from "@/components/ErrorCard";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { ExtractRoom } from "@/types/type";
 
 interface Props {
     extract_room_id: string;
@@ -45,7 +44,10 @@ export const ExtractRooms = ({ extract_room_id }: Props) => {
     const { data, isLoading, isError } = useGetExtractedRooms(extract_room_id);
     const [isOpen, setIsOpen] = useState(false)
 
-    const rooms  = data?.documents || [];
+
+    const rooms = useMemo(() => {
+        return Array.isArray(data?.documents) ? data?.documents : []
+    } , [data?.documents])
 
     const [currentPage, setCurrentPage] = useState(1);
     const [selectRoom, setSelectRoom] = useState("");

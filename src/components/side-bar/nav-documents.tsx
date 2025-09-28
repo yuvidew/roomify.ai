@@ -20,43 +20,61 @@ import { useGetRoomsList } from "@/features/documents/api/use-get-rooms-list"
 import { EllipsisVertical, Ellipsis, Folder, Share, Trash2, House } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import Link from "next/link"
-import { useParams,  useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useDeleteHomeDocument } from "@/features/dashboard/api/use-delete-home-document"
 import Spinner from "../Spinner"
+import { useMemo, useState } from "react"
+import { Hint } from "../Hint"
+// import { ScrollArea } from "../ui/scroll-area"
 
 export const NavDocuments = () => {
-    // TODO: implement a more click button logic if i click the more button then show the all list 
-    const {id} = useParams();
+    const { data, isLoading, isError } = useGetRoomsList();
+    const { mutate, isPending } = useDeleteHomeDocument();
+    const { id } = useParams();
 
     const { isMobile } = useSidebar();
     const router = useRouter()
 
-    const { data, isLoading, isError } = useGetRoomsList();
-    const { mutate, isPending } = useDeleteHomeDocument()
+    const [showAll, setShowAll] = useState(false);
 
-    const documents = Array.isArray(data?.documents) ? data.documents : []
+    const documentsData = data?.documents
+
+    const documents = useMemo(() => {
+        return Array.isArray(documentsData) ? documentsData : []
+    }, [documentsData])
+
+    const visibleDocuments = useMemo(() => {
+        return showAll ? documents : documents.slice(0, 5)
+    }, [documents, showAll])
+
 
     if (isError) {
         return null
     }
 
+
+
     return (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
             <SidebarGroupLabel>Documents</SidebarGroupLabel>
+            {/* <ScrollArea className=" h-60 w-80"> */}
+
             <SidebarMenu>
                 {isLoading ? (
                     [1, 2, 3, 4].map((item) => (
                         <Skeleton key={item} className=" h-8 rounded-sm" />
                     ))
-                ) : 
-                    documents.length > 0 ? documents.map((item) => (
+                ) :
+                    documents.length > 0 ? visibleDocuments.map((item) => (
                         <SidebarMenuItem key={item.$id}>
-                            <SidebarMenuButton asChild isActive = {item.$id === id}>
+                            <Hint side = "left" align="center" label={item.home_title}>
+                            <SidebarMenuButton asChild isActive={item.$id === id}>
                                 <Link href={`/${item.$id}`}>
                                     <House />
                                     <span className=" w-[80%] truncate">{item.home_title}</span>
                                 </Link>
                             </SidebarMenuButton>
+                            </Hint>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <SidebarMenuAction
@@ -105,20 +123,21 @@ export const NavDocuments = () => {
                             </DropdownMenu>
                         </SidebarMenuItem>
                     ))
-                    : 
-                    <SidebarMenuItem className=" text-sm">
-                        No documents here..
-                    </SidebarMenuItem>
+                        :
+                        <SidebarMenuItem className=" text-sm">
+                            No documents here..
+                        </SidebarMenuItem>
                 }
                 {documents.length > 5 && (
                     <SidebarMenuItem>
-                        <SidebarMenuButton className="text-sidebar-foreground/70">
+                        <SidebarMenuButton className="text-sidebar-foreground/70" onClick={() => setShowAll(prev => !prev)}>
                             <Ellipsis className="text-sidebar-foreground/70" />
                             <span>More</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 )}
             </SidebarMenu>
+            {/* </ScrollArea> */}
         </SidebarGroup >
     )
 }
