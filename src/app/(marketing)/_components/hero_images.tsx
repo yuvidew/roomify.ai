@@ -3,7 +3,7 @@ import React from 'react'
 
 export const HeroImages = () => {
     return (
-        <div className=' relative grid grid-cols-1 gap-2'>
+        <div className=' relative grid grid-cols-2  gap-2'>
             <Image
                 src={"/img1.jpeg"}
                 alt='Home image 1'

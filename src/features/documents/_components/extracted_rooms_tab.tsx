@@ -63,13 +63,23 @@ export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) =>
                     isShowIcons
                 />
 
-                {ai_generated_images === 0 && (
+                {ai_generated_images !== 0 && (
+                    <>
                     <Button 
                         onClick={() => route.push(`/extract-rooms?extract_room_id=${id}`)}
+                        className=' lg:flex md:flex hidden'
                     >
                         <Sparkles className=' size-4' />
                         Generate images
                     </Button>
+                    <Button 
+                        size={"icon"}
+                        onClick={() => route.push(`/extract-rooms?extract_room_id=${id}`)}
+                        className=' lg:hidden md:hidden flex'
+                    >
+                        <Sparkles className=' size-4' />
+                    </Button>
+                    </>
                 )}
             </div>
 

@@ -11,6 +11,7 @@ import { ErrorCard } from '@/components/ErrorCard'
 import { ExtractRoom } from '@/types/type'
 import { ExtractedRoomsTab } from '@/features/documents/_components/extracted_rooms_tab'
 import { GeneratedImagesTab } from '@/features/documents/_components/generated_images_tab'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface Props {
     id: string
@@ -54,7 +55,7 @@ export const DocumentIdView = ({ id }: Props) => {
 
     return (
         <main className=" p-6 h-full  flex flex-col gap-7">
-            <section className=' lg:w-[80%] py-5 flex flex-col gap-5 h-full m-auto'>
+            <section className=' lg:w-[80%] w-full py-5 flex flex-col gap-5 h-full m-auto'>
                 {/* start to heading  */}
                 <div className=' flex flex-col gap-4 '>
                     <Button size={"icon"}>
@@ -67,11 +68,14 @@ export const DocumentIdView = ({ id }: Props) => {
                 {/* end to heading  */}
 
                 <Tabs defaultValue="upload-image" className="w-full">
+                    <ScrollArea>
                     <TabsList className=''>
                         <TabsTrigger value="upload-image" className=' '><HousePlus />You floor plan</TabsTrigger>
                         <TabsTrigger value="ai-extracted-rooms" className=' '><Logs /> AI extracted room details</TabsTrigger>
                         <TabsTrigger value="ai-generated-rooms" className=' '><Home /> AI generated room view</TabsTrigger>
                     </TabsList>
+                    <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
                     <TabsContent value="upload-image">
                         <UploadImageSection home_details={homeDetails} />
                     </TabsContent>

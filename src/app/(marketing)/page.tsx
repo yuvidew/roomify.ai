@@ -16,7 +16,7 @@ const MarketingPage = async () => {
 
             <div className=' flex flex-col gap-9 mt-48 justify-center lg:w-[80%] w-full m-auto md:justify-start text-center gap-y-8 gap-x-10 flex-1 px-6 pb-10'>
 
-                <div className='grid lg:grid-cols-2 h-[60vh] grid-cols-1 gap-5'>
+                <div className='grid lg:grid-cols-2 lg:h-[60vh] grid-cols-1 gap-5'>
                     {/* start to hero section  */}
                     <HeroSection isUserLogin={!!user} />
                     {/* end to hero section  */}
