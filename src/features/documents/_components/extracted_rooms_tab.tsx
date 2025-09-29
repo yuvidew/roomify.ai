@@ -63,7 +63,7 @@ export const ExtractedRoomsTab = ({ rooms , ai_generated_images , id}: Props) =>
                     isShowIcons
                 />
 
-                {ai_generated_images !== 0 && (
+                {ai_generated_images === 0 && (
                     <>
                     <Button 
                         onClick={() => route.push(`/extract-rooms?extract_room_id=${id}`)}
