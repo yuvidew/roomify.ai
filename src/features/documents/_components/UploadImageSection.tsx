@@ -95,7 +95,7 @@ export const UploadImageSection = ({ home_details }: Props) => {
                             {children}
                         </blockquote>
                     ),
-                    code: ({ node, className, children, ...props }) => {
+                    code: ({  className, children, ...props }) => {
                         const match = /language-(\w+)/.exec(className || "");
                         return match ? (
                             <pre className="bg-gray-100 rounded-lg p-4 overflow-x-auto mb-4">

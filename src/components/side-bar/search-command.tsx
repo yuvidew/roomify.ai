@@ -40,7 +40,7 @@ export const SearchCommand = ({ onOpenChange, open }: Props) => {
                         ? [1, 2, 3, 4].map((item) => (
                             <Skeleton key={item} className=" h-8 rounded-sm" />
                         ))
-                        : documents.map(({ $id, home_title }) => (
+                        :  documents.map(({ $id, home_title }) => (
                             <CommandItem 
                                 key={$id}
 

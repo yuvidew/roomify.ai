@@ -10,35 +10,59 @@ import { ID, Query } from "node-appwrite";
 import { GenerateImagesSchema } from "../schema";
 
 function buildCombinedPrompt(rooms: string, prompt: string): string {
-    // return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
 
+
+    // return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
+    
     // For each room, provide:
-    // 1. A written description starting with "<ROOM NAME> — ~<AREA> sqft"
+    // 1. A markdown-formatted written description following this structure:
+    //     - Start with "## <ROOM NAME> — ~<AREA> sqft\\n"
+    //     - Include "### Room Type\\n[room type]\\n\\n"
+    //     - Add "### Description\\n[detailed description]\\n\\n" 
+    //     - End with "### Key Features\\n- [feature 1]\\n- [feature 2]\\n- [feature 3]\\n\\n"
     // 2. A photorealistic interior rendering image
     // 3. First identify the room type (e.g., bedroom, bathroom, kitchen, living room, dining room, office, closet, etc.)
-
-    // FLOOR PLAN DATA:${rooms}
-
+    
+    // Format the written descriptions as markdown text with proper escaping (use \\\\n for line breaks).
+    
+    // Example format:
+    // "## Master Bedroom — ~180 sqft\\n\\n### Room Type\\nBedroom\\n\\n### Description\\nA spacious master bedroom featuring...\\n\\n### Key Features\\n- Large windows for natural light\\n- Built-in closet space\\n- Hardwood flooring\\n\\n"
+    
+    // FLOOR PLAN DATA: ${rooms}
     // Style: ${prompt}`;
 
-    return `Create both written descriptions AND visual renderings for each room in this architectural floor plan.
-    
-    For each room, provide:
-    1. A markdown-formatted written description following this structure:
-        - Start with "## <ROOM NAME> — ~<AREA> sqft\\n"
-        - Include "### Room Type\\n[room type]\\n\\n"
-        - Add "### Description\\n[detailed description]\\n\\n" 
-        - End with "### Key Features\\n- [feature 1]\\n- [feature 2]\\n- [feature 3]\\n\\n"
-    2. A photorealistic interior rendering image
-    3. First identify the room type (e.g., bedroom, bathroom, kitchen, living room, dining room, office, closet, etc.)
-    
-    Format the written descriptions as markdown text with proper escaping (use \\\\n for line breaks).
-    
-    Example format:
-    "## Master Bedroom — ~180 sqft\\n\\n### Room Type\\nBedroom\\n\\n### Description\\nA spacious master bedroom featuring...\\n\\n### Key Features\\n- Large windows for natural light\\n- Built-in closet space\\n- Hardwood flooring\\n\\n"
-    
-    FLOOR PLAN DATA: ${rooms}
-    Style: ${prompt}`;
+    return `You are an expert interior designer and architectural visualizer. Create comprehensive room analyses for each space in this floor plan.
+
+TASK: For each room identified in the floor plan data, provide:
+
+1. **Written Description** (markdown format):
+   - Header: ## [Room Name] — ~[Area] sqft
+   - Room Type: ### Room Type\n[specific room category]
+   - Description: ### Description\n[detailed 2-3 sentence description of the space, layout, and primary functions]
+   - Key Features: ### Key Features\n- [feature 1]\n- [feature 2]\n- [feature 3]
+
+2. **Visual Requirements**: 
+   - Generate a photorealistic interior rendering
+   - Show the room from an appealing angle
+   - Include appropriate furniture and decor
+   - Ensure lighting matches the room's natural light sources
+   - Style should reflect: ${prompt}
+
+GUIDELINES:
+- First, analyze the floor plan to identify all distinct rooms
+- Determine realistic square footage based on proportions
+- Choose appropriate room types (bedroom, bathroom, kitchen, living room, dining room, office, closet, laundry, etc.)
+- Descriptions should be specific and practical
+- Features should be relevant to the room type and realistic for the space
+- Use proper markdown formatting with escaped line breaks (\\n)
+
+FLOOR PLAN DATA:
+${rooms}
+
+STYLE PREFERENCE: ${prompt}
+
+OUTPUT FORMAT:
+Provide each room as a complete package with both written description and visual rendering. Ensure consistency between the written description and the generated image.`;
 }
 
 const app = new Hono()
@@ -213,6 +237,7 @@ const app = new Hono()
                 id,
             }); 
         } catch (error) {
+            console.log("Error to delete room" , error);
             return c.json({
                 message: "Failed to delete room image",
                 status: "success",

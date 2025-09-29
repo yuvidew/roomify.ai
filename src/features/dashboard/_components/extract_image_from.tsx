@@ -29,7 +29,7 @@ export const ExtractImageFrom = () => {
     if (data) {
       setRooms(data?.rooms as Room[]);
     }
-  } , [data])
+  } , [data , setRooms])
 
   return (
     <div className=" h-full flex justify-center flex-col gap-8 w-[35%] border-r py-3 px-6">

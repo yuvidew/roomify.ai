@@ -17,7 +17,7 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import { useGetRoomsList } from "@/features/documents/api/use-get-rooms-list"
-import { EllipsisVertical, Ellipsis, Folder, Share, Trash2, House } from "lucide-react"
+import { EllipsisVertical, Ellipsis, Folder, Trash2, House } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
@@ -93,10 +93,6 @@ export const NavDocuments = () => {
                                     <DropdownMenuItem onClick={() => router.push(`/${item.$id}`)}>
                                         <Folder />
                                         <span>Open</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Share />
-                                        <span>Share</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem

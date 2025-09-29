@@ -122,7 +122,7 @@ export const DashboardView = () => {
 
                                 {/* start to delete button */}
                                 <div className=" absolute top-2 right-2">
-                                    <Button onClick={() => setUploadUrl(undefined)} size={"icon"} variant={"outline"} >
+                                    <Button disabled={isPending} onClick={() => setUploadUrl(undefined)} size={"icon"} variant={"outline"} >
                                         <Trash2 />
                                     </Button>
                                 </div>

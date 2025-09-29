@@ -7,6 +7,9 @@ export const AI_EXTRACT_ROOMS_TABLE_ID = process.env.NEXT_PUBLIC_APPWRITE_AI_EXT
 export const APPWRITER_KEY = process.env.NEXT_APPWRITE_KEY!;
 export const AI_GENERATED_ROOMS_TABLE_ID = process.env.NEXT_PUBLIC_APPWRITE_AI_GENERATED_ROOMS_TABLE_ID!;
 
+export const GITHUB_REDIRECT_URL = process.env.NEXT_PUBLIC_Github!;
+export const GOGGLE_REDIRECT_URL = process.env.NEXT_PUBLIC_GOOGLE!;
+
 // Provide a robust default for Appwrite Cloud and normalize region subdomains
 const normalizeEndpoint = (raw?: string) => {
   const fallback = "https://cloud.appwrite.io/v1";
