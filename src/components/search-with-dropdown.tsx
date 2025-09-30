@@ -52,7 +52,6 @@ interface Props  {
  * @returns JSX element for the searchable dropdown.
  */
 export const SearchWithDropDown = ({rooms , isShowIcons = false , onChangeValue , total_length , selectedValue = ""} : Props) => {
-    // TODO: solve this if the page is change the search drop down it's now working 
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(selectedValue);
 

@@ -4,6 +4,15 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
 
 import {
     Dialog,
@@ -13,6 +22,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 // import 'highlight.js/styles/github.css';
 
 interface Props {
@@ -24,42 +34,70 @@ interface Props {
  * @param home_details extract metadata, e.g. { $id: "abc123", home_title: "Living Space", img_url: "/floor-plan.png", user_id: "user_1" }.
  */
 export const UploadImageSection = ({ home_details }: Props) => {
+    const isMobile = useIsMobile();
     return (
         <section className="bg-sidebar p-4  rounded-md">
-            {/* start to floor plan image */}
+            {/* start to floor plan image on mobile or desktop  responsive*/}
+            {isMobile ? (
+                <Drawer>
+                    <DrawerTrigger>
+                        <Image
+                            src={home_details.img_url}
+                            alt={home_details.home_title}
+                            width={600}
+                            height={600}
+                            className=" size-36 object-contain rounded-md"
+                        />
+                    </DrawerTrigger>
+                    <DrawerContent>
+                        <DrawerHeader>
+                            <DrawerTitle className="sr-only">Are you absolutely sure?</DrawerTitle>
+                            <DrawerDescription className="sr-only">This action cannot be undone.</DrawerDescription>
+                        </DrawerHeader>
+                        <DrawerFooter>
+                            <Image
+                            src={home_details.img_url}
+                            alt={home_details.home_title}
+                            width={600}
+                            height={600}
+                            className=" size-96 object-contain rounded-md m-auto"
+                        />
+                        </DrawerFooter>
+                    </DrawerContent>
+                </Drawer>
+            ) : (
+                <Dialog>
+                    <DialogTrigger>
+                        <Image
+                            src={home_details.img_url}
+                            alt={home_details.home_title}
+                            width={600}
+                            height={600}
+                            className=" size-36 object-contain rounded-md"
+                        />
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="sr-only">
+                                {home_details.home_title || "Floor plan preview"}
+                            </DialogTitle>
+                            <DialogDescription className="sr-only">
+                                Enlarged view of the uploaded floor plan image.
+                            </DialogDescription>
+                        </DialogHeader>
 
-            <Dialog>
-                <DialogTrigger>
-                    <Image
-                        src={home_details.img_url}
-                        alt={home_details.home_title}
-                        width={600}
-                        height={600}
-                        className=" size-36 object-contain rounded-md"
-                    />
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle className="sr-only">
-                            {home_details.home_title || "Floor plan preview"}
-                        </DialogTitle>
-                        <DialogDescription className="sr-only">
-                            Enlarged view of the uploaded floor plan image.
-                        </DialogDescription>
-                    </DialogHeader>
+                        <Image
+                            src={home_details.img_url}
+                            alt={home_details.home_title}
+                            width={600}
+                            height={600}
+                            className=" size-96 object-contain rounded-md m-auto"
+                        />
+                    </DialogContent>
+                </Dialog>
+            )}
+            {/* end to floor plan image on mobile or desktop  responsive*/}
 
-                    <Image
-                        src={home_details.img_url}
-                        alt={home_details.home_title}
-                        width={600}
-                        height={600}
-                        className=" size-96 object-contain rounded-md m-auto"
-                    />
-                </DialogContent>
-            </Dialog>
-            {/* end to floor plan image */}
-
-            {/* TODO: solve the show description issue it's not working */}
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
@@ -95,7 +133,7 @@ export const UploadImageSection = ({ home_details }: Props) => {
                             {children}
                         </blockquote>
                     ),
-                    code: ({  className, children, ...props }) => {
+                    code: ({ className, children, ...props }) => {
                         const match = /language-(\w+)/.exec(className || "");
                         return match ? (
                             <pre className="bg-gray-100 rounded-lg p-4 overflow-x-auto mb-4">
