@@ -37,6 +37,7 @@ export const NavSecondary = () => {
     </SidebarGroup>
 
     {/* start to setting modal */}
+    
     <SettingModel open = {isOpen} onOpenChange={setIsOpen} />
     {/* end to setting modal */}
     </>

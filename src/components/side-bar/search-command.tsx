@@ -8,6 +8,7 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
+    CommandResponsiveDialog,
 } from "@/components/ui/command";
 import { useGetRoomsList } from "@/features/documents/api/use-get-rooms-list";
 import { Skeleton } from "../ui/skeleton";
@@ -31,7 +32,7 @@ export const SearchCommand = ({ onOpenChange, open }: Props) => {
 
     
     return (
-        <CommandDialog onOpenChange={onOpenChange} open={open}>
+        <CommandResponsiveDialog onOpenChange={onOpenChange} open={open} shouldFilter = {false}>
             <CommandInput placeholder="Type a command or search..." />
             <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -56,6 +57,6 @@ export const SearchCommand = ({ onOpenChange, open }: Props) => {
                     {isError && <p className=" text-center text-muted-foreground"> Failed to fetch list</p>}
                 </CommandGroup>
             </CommandList>
-        </CommandDialog>
+        </CommandResponsiveDialog>
     );
 };
