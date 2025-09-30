@@ -39,8 +39,8 @@ export const ImageDialog = ({ isOpen, onIsOpen, rooms_image }: Props) => {
             <Drawer onOpenChange={onIsOpen} open={isOpen}>
                 <DrawerContent>
                     <DrawerHeader>
-                        <DrawerTitle className=' sr-only'>Are you absolutely sure?</DrawerTitle>
-                        <DrawerDescription className=' sr-only'>This action cannot be undone.</DrawerDescription>
+                        <DrawerTitle className=' sr-only'>Room Image Preview</DrawerTitle>
+                        <DrawerDescription className=' sr-only'>Enlarged view of the selected room image.</DrawerDescription>
                     </DrawerHeader>
                     <DrawerFooter>
                         <Image
