@@ -28,7 +28,7 @@ export const Logo = ({isTitleShow} : Props) => {
             </Button>
 
             {isTitleShow && (
-                <h2 className={cn('font-semibold' , font.className)}>
+                <h2 className={cn('font-semibold lg:flex md:flex hidden' , font.className)}>
                     Roomify.AI
                 </h2>
             )}
